@@ -100,6 +100,6 @@ public class NTCSP extends JApplication
 			content.revalidate();
 			content.repaint();
 		}
-		if(ac.equals)
+
 	}
 }
