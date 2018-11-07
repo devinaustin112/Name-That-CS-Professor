@@ -51,7 +51,8 @@ public class NTCSP extends JApplication
 		rf = ResourceFinder.createInstance(Marker.class);
 		cf = new ContentFactory(rf);
 
-		Type c = cf.createContent("Term44.png");
+		//TODO fix this
+		Content c = cf.createContent("Term44.png");
 
 		vis = new Visualization();
 		VisualizationView visView = vis.getView();
