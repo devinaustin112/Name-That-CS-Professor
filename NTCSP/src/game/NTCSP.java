@@ -16,7 +16,6 @@ import event.MetronomeListener;
 import io.ResourceFinder;
 import resources.Marker;
 import visual.*;
-import visual.dynamic.sampled.Screen;
 import visual.statik.SimpleContent;
 import visual.statik.sampled.Content;
 import visual.statik.sampled.ContentFactory;
@@ -25,6 +24,7 @@ public class NTCSP extends JApplication
 		implements MetronomeListener, ActionListener
 {
 	JButton start, next;
+	int count = 0;
 	Metronome met;
 	Visualization vis;
 	ResourceFinder rf;
@@ -51,7 +51,7 @@ public class NTCSP extends JApplication
 		rf = ResourceFinder.createInstance(Marker.class);
 		cf = new ContentFactory(rf);
 
-		Content c = cf.createContent("Term44.png");
+		Type c = cf.createContent("Term44.png");
 
 		vis = new Visualization();
 		VisualizationView visView = vis.getView();
@@ -100,6 +100,13 @@ public class NTCSP extends JApplication
 			content.revalidate();
 			content.repaint();
 		}
-
+		if(ac.equals("Next Question")) {
+			count++;
+			if(count == 5) {
+				content.removeAll();
+				content.revalidate();
+				content.repaint();
+			}
+		}
 	}
 }
