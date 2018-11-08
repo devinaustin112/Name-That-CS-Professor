@@ -33,6 +33,7 @@ public class NTCSP extends JApplication
     JTextField usernameField;
     JTextArea question;
 	int count = 0;
+	int score;
 	Metronome met;
 	Visualization vis;
 	ResourceFinder rf;
@@ -50,6 +51,8 @@ public class NTCSP extends JApplication
 	public NTCSP(int width, int height)
 	{
 		super(width, height);
+
+		score = 0;
 	}
 
 	public static void main(String[] args)
@@ -188,12 +191,28 @@ public class NTCSP extends JApplication
 		}
 	}
 
+	public void displayScore()
+	{
+		JPanel content = (JPanel)getContentPane();
+
+		JTextArea scoreArea = new JTextArea();
+		scoreArea.setEditable(false);
+		scoreArea.setText(username + "'s Score: " + score);
+		scoreArea.setBounds(width/2, height/2, 200, 50);
+		content.add(scoreArea);
+
+		JButton playAgainButton = new JButton("Play Again");
+		playAgainButton.setBounds(width/2, height/2 + 200, 200, 50);
+		playAgainButton.addActionListener(this);
+		content.add(playAgainButton);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
 		JPanel content = (JPanel) getContentPane();
 		String ac = arg0.getActionCommand();
-		if (ac.equals("Start"))
+		if (ac.equals("Start") || ac.equals("Play Again"))
 		{
 		    // Store username
 		    username = usernameField.getText();
@@ -209,6 +228,7 @@ public class NTCSP extends JApplication
 		    question.setText(level1Qs.get(count).getText());
 		    question.setLineWrap(true);
 		    question.setBounds(100, 300, 400, 50);
+		    count++;
 		    content.add(question);
 			content.revalidate();
 			content.repaint();
@@ -217,17 +237,20 @@ public class NTCSP extends JApplication
 		if (ac.equals("Next Question"))
 		{
 		    // Display question
-			count++;
 			if (count == 5)
 			{
 				content.removeAll();
 				content.revalidate();
 				content.repaint();
+				displayScore();
 			} else {
 		    question.setText(level1Qs.get(count).getText());
+		    score++;
 			content.revalidate();
 			content.repaint();
 			}
+
+			count++;
 		}
 	}
 }
