@@ -14,6 +14,7 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.*;
 
 import app.*;
 import event.Metronome;
@@ -29,6 +30,8 @@ public class NTCSP extends JApplication
 		implements MetronomeListener, ActionListener
 {
 	JButton start, next;
+    JTextField usernameField;
+    JTextArea question;
 	int count = 0;
 	Metronome met;
 	Visualization vis;
@@ -36,13 +39,13 @@ public class NTCSP extends JApplication
 	ContentFactory cf;
 	ImageFactory ifa;
 	InputStream is;
+	String username;
 	Type t, t1;
 	HashMap<Integer, String> questions;
 	HashMap<Integer, String[]> answers;
 
 	ArrayList<Question> level1Qs, level2Qs, level3Qs;
-	ArrayList<Professor> professors; // don't know if we actually need this but
-										// its loaded
+	ArrayList<Professor> professors; //don't know if we actually need this but its loaded
 
 	public NTCSP(int width, int height)
 	{
@@ -137,6 +140,9 @@ public class NTCSP extends JApplication
 		vis.add(t);
 
 		content.add(visView);
+
+		// Load questions from file
+        load();
 	}
 
 	@Override
@@ -146,22 +152,37 @@ public class NTCSP extends JApplication
 		if (arg0 < 4500)
 		{
 			vis.repaint();
-		} else if (arg0 == 5000)
+		}
+		else if (arg0 == 5000)
 		{
 			vis.remove(t);
 			vis.add(t1);
 			vis.repaint();
-		} else if (arg0 > 5000 && arg0 < 8750)
+		}
+		else if (arg0 > 5000 && arg0 < 8750)
 		{
 			vis.repaint();
-		} else if (arg0 == 9500)
+		}
+		else if (arg0 == 9500)
 		{
 			Content c = cf.createContent("NameThatCSProfessor.png");
 			vis.remove(t1);
 			vis.add(c);
 			vis.getView().setBounds(0, 0, 1000, 750);
+
+			// Create user name label
+            JLabel usernameLabel = new JLabel("Enter User Name:", JLabel.CENTER);
+            usernameLabel.setBounds(0,750, 150, 50);
+            content.add(usernameLabel);
+
+			// Create user name entry
+			usernameField = new JTextField();
+			usernameField.setBounds(150, 750, 350, 50);
+			content.add(usernameField);
+
+			// Create start button
 			start = new JButton("Start");
-			start.setBounds(0, 750, 1000, 50);
+			start.setBounds(width/2, 750, 500, 50);
 			start.addActionListener(this);
 			content.add(start);
 		}
@@ -174,22 +195,38 @@ public class NTCSP extends JApplication
 		String ac = arg0.getActionCommand();
 		if (ac.equals("Start"))
 		{
+		    // Store username
+		    username = usernameField.getText();
+
 			content.removeAll();
 			next = new JButton("Next Question");
 			next.setBounds(0, 750, 1000, 50);
 			next.addActionListener(this);
 			content.add(next);
+			
+		    question = new JTextArea();
+		    question.setEditable(false);
+		    question.setText(level1Qs.get(count).toString());
+		    question.setLineWrap(true);
+		    question.setBounds(100, 300, 400, 50);
+		    content.add(question);
 			content.revalidate();
 			content.repaint();
+			met.stop();
 		}
 		if (ac.equals("Next Question"))
 		{
+		    // Display question
 			count++;
 			if (count == 5)
 			{
 				content.removeAll();
 				content.revalidate();
 				content.repaint();
+			} else {
+		    question.setText(level1Qs.get(count).toString());
+			content.revalidate();
+			content.repaint();
 			}
 		}
 	}
