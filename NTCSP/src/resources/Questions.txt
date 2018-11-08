@@ -1,5 +1,5 @@
 Bowers
-1 - I name my child after a Lord of the Rings character
+1 - I named my child after a Lord of the Rings character
 2 - My interests lie in Compuational Geometry
 3 - I have lived in in Uganda
 Lam
@@ -14,9 +14,6 @@ Mayfield
 1 - My research is focused on databases and k-12 educational programs
 2 - I was an intern at Google
 3 - I have a Bachelor of Arts in German
-Laycock
-1 - I am the CS Department office manager
-3 - I was in the military
 Stewart
 1 - I just joined JMU in 2017
 2 - I have worked as a file clerk in the past
@@ -42,3 +39,6 @@ Aboutabl
 1 - I did my undergrad in Egypt
 2 - I taught in Strayer University
 3 - I worked at Honeywell
+Laycock
+1 - I am the CS Department office manager
+3 - I was in the military

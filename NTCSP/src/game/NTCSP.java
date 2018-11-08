@@ -206,7 +206,7 @@ public class NTCSP extends JApplication
 			
 		    question = new JTextArea();
 		    question.setEditable(false);
-		    question.setText(level1Qs.get(count).toString());
+		    question.setText(level1Qs.get(count).getText());
 		    question.setLineWrap(true);
 		    question.setBounds(100, 300, 400, 50);
 		    content.add(question);
@@ -224,7 +224,7 @@ public class NTCSP extends JApplication
 				content.revalidate();
 				content.repaint();
 			} else {
-		    question.setText(level1Qs.get(count).toString());
+		    question.setText(level1Qs.get(count).getText());
 			content.revalidate();
 			content.repaint();
 			}
