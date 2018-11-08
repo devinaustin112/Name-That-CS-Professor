@@ -18,4 +18,12 @@ public class Question
     this.questionText = txt;
     this.answer = prof;
   }
+  
+  public String getText() {
+    return questionText;
+  }
+  
+  public String toString() {
+    return questionText + ":" + level + ":" + answer;
+  }
 }

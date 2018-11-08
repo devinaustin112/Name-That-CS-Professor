@@ -46,8 +46,8 @@ public class NTCSP extends JApplication
 	HashMap<Integer, String> questions;
 	HashMap<Integer, String[]> answers;
 
-	ArrayList<Question> level1Qs, level2Qs, level3Qs;
-	ArrayList<Professor> professors;
+	  ArrayList<Question> level1Qs, level2Qs, level3Qs;
+	  ArrayList<Professor> professors; //don't know if we actually need this but its loaded
 
 	public NTCSP(int width, int height)
 	{
@@ -59,72 +59,65 @@ public class NTCSP extends JApplication
 		invokeInEventDispatchThread(new NTCSP(1000, 800));
 	}
 
-	public void load()
-	{
+	  public void load()
+	  {
 
-		professors = new ArrayList<>();
-		level1Qs = new ArrayList<>();
-		level2Qs = new ArrayList<>();
-		level3Qs = new ArrayList<>();
+	    professors = new ArrayList<>();
+	    level1Qs = new ArrayList<>();
+	    level2Qs = new ArrayList<>();
+	    level3Qs = new ArrayList<>();
 
-		BufferedReader in;
-		String line, qu;
-		Professor prof = null;
-		int l;
-		Question q;
+	    BufferedReader in;
+	    String line, qu;
+	    Professor prof = null;
+	    int l;
+	    Question q;
 
-		ResourceFinder finder = ResourceFinder
-				.createInstance(resources.Marker.class);
-		InputStream is = finder.findInputStream("Questions.txt");
-		in = new BufferedReader(new InputStreamReader(is));
+	    is = rf.findInputStream("Questions.txt");
+	    in = new BufferedReader(new InputStreamReader(is));
 
-		try
-		{
+	    try
+	    {
 
-			// rf = ResourceFinder.createInstance(Marker.class);
-			//
-			// is = rf.findInputStream("Questions.txt");
-			// in = new BufferedReader(new InputStreamReader(is));
+	      while ( (line = in.readLine()) != null)
+	      {
 
-			// in = new BufferedReader(new FileReader("Questions.txt"));
+	        if (Character.isLetter(line.charAt(0)))
+	        {
+	          prof = new Professor(line);
+	          professors.add(prof);
+	          continue;
+	        }
 
-			line = in.readLine();
-			while (line != null)
-			{
+	        l = line.charAt(0) - '0';
+	        qu = line.substring(line.indexOf('-') + 2, line.length());
+	        q = new Question(l, qu, prof);
 
-				if (Character.isLetter(line.charAt(0)))
-				{
-					prof = new Professor(line);
-					professors.add(prof);
-					line = in.readLine();
-					continue;
-				}
+	        switch (l)
+	        {
+	          case 1:
+	            level1Qs.add(q);
+	            break;
+	          case 2:
+	            level2Qs.add(q);
+	            break;
+	          case 3:
+	            level3Qs.add(q);
+	            break;
+	        }
+	      }
+	    } catch (IOException e)
+	    {
+	      e.printStackTrace();
+	    }
 
-				l = line.charAt(0);
-				qu = line.substring(line.indexOf('-'), line.length());
-				q = new Question(l, qu, prof);
-
-				switch (l)
-				{
-				case 1:
-					level1Qs.add(q);
-					break;
-				case 2:
-					level2Qs.add(q);
-					break;
-				case 3:
-					level3Qs.add(q);
-					break;
-				}
-
-				line = in.readLine();
-			}
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
-	}
+//	    testing
+//	    System.out.println(professors);
+//	    System.out.println(level1Qs);
+//	    System.out.println(level2Qs);
+//	    System.out.println(level3Qs);
+//	     System.out.println(level3Qs.size() + level2Qs.size() + level1Qs.size());
+	  }
 
 	public void init()
 	{
@@ -324,3 +317,165 @@ public class NTCSP extends JApplication
 		}
 	}
 }
+//=======
+//  JButton start, next;
+//  int count = 0;
+//  Metronome met;
+//  Visualization vis;
+//  ResourceFinder rf;
+//  InputStream is;
+//
+//  ContentFactory cf;
+//  HashMap<Integer, String> questions;
+//  HashMap<Integer, String[]> answers;
+//
+//  ArrayList<Question> level1Qs, level2Qs, level3Qs;
+//  ArrayList<Professor> professors; //don't know if we actually need this but its loaded
+//
+//  public NTCSP(int width, int height)
+//  {
+//    super(width, height);
+//  }
+//
+//  public static void main(String[] args)
+//  {
+//    invokeInEventDispatchThread(new NTCSP(1000, 800));
+//  }
+//
+//  public void load()
+//  {
+//
+//    professors = new ArrayList<>();
+//    level1Qs = new ArrayList<>();
+//    level2Qs = new ArrayList<>();
+//    level3Qs = new ArrayList<>();
+//
+//    BufferedReader in;
+//    String line, qu;
+//    Professor prof = null;
+//    int l;
+//    Question q;
+//
+//    is = rf.findInputStream("Questions.txt");
+//    in = new BufferedReader(new InputStreamReader(is));
+//
+//    try
+//    {
+//
+//      while ( (line = in.readLine()) != null)
+//      {
+//
+//        if (Character.isLetter(line.charAt(0)))
+//        {
+//          prof = new Professor(line);
+//          professors.add(prof);
+//          continue;
+//        }
+//
+//        l = line.charAt(0) - '0';
+//        qu = line.substring(line.indexOf('-') + 2, line.length());
+//        q = new Question(l, qu, prof);
+//
+//        switch (l)
+//        {
+//          case 1:
+//            level1Qs.add(q);
+//            break;
+//          case 2:
+//            level2Qs.add(q);
+//            break;
+//          case 3:
+//            level3Qs.add(q);
+//            break;
+//        }
+//      }
+//    } catch (IOException e)
+//    {
+//      e.printStackTrace();
+//    }
+//
+////    testing
+////    System.out.println(professors);
+////    System.out.println(level1Qs);
+////    System.out.println(level2Qs);
+////    System.out.println(level3Qs);
+////     System.out.println(level3Qs.size() + level2Qs.size() + level1Qs.size());
+//  }
+//
+//  public void init()
+//  {
+//
+//    //initialize global attributes
+//    met = new Metronome(5000);
+//    rf = ResourceFinder.createInstance(Marker.class);
+//    cf = new ContentFactory(rf);
+//
+//    load();
+//
+//    JPanel content = (JPanel) getContentPane();
+//    met.addListener(this);
+//    met.start();
+//
+//    //TODO fix this
+//    Content c = cf.createContent("Term44.png");
+//
+//    vis = new Visualization();
+//    VisualizationView visView = vis.getView();
+//    vis.add(c);
+//    visView.setRenderer(new PlainVisualizationRenderer());
+//    visView.setBounds(0, 0, 1000, 800);
+//
+//    content.add(visView);
+//  }
+//
+//  @Override
+//  public void handleTick(int arg0)
+//  {
+//    JPanel content = (JPanel) getContentPane();
+//    if (arg0 == 5000)
+//    {
+//      Content c = cf.createContent("Term21.png");
+//      vis.add(c);
+//      vis.repaint();
+//    } else if (arg0 == 10000)
+//    {
+//      Content c = cf.createContent("NameThatCSProfessor.png");
+//      vis.clear();
+//      vis.add(c);
+//      vis.getView().setBounds(0, 0, 1000, 750);
+//      start = new JButton("Start");
+//      start.setBounds(0, 750, 1000, 50);
+//      start.addActionListener(this);
+//      met.stop();
+//      content.add(start);
+//    }
+//  }
+//
+//  @Override
+//  public void actionPerformed(ActionEvent arg0)
+//  {
+//    JPanel content = (JPanel) getContentPane();
+//    String ac = arg0.getActionCommand();
+//    if (ac.equals("Start"))
+//    {
+//      content.removeAll();
+//      next = new JButton("Next Question");
+//      next.setBounds(0, 750, 1000, 50);
+//      next.addActionListener(this);
+//      content.add(next);
+//      content.revalidate();
+//      content.repaint();
+//    }
+//    if (ac.equals("Next Question"))
+//    {
+//      count++;
+//      if (count == 5)
+//      {
+//        content.removeAll();
+//        content.revalidate();
+//        content.repaint();
+//      }
+//    }
+//  }
+//>>>>>>> 2925dbea75eb568b5617fe362b39c6bc86952000
+//}

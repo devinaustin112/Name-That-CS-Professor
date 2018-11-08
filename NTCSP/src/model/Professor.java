@@ -16,5 +16,9 @@ public class Professor
   public Professor(String name) {
     this.name = name;
   }
+  
+  public String toString() {
+    return "Dr. " + name;
+  }
 
 }
