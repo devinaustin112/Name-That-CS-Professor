@@ -44,7 +44,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   HashMap<Integer, String[]> answers;
 
   ArrayList<Question> level1Qs, level2Qs, level3Qs;
-  ArrayList<Professor> professors;
+  ArrayList<Professor> professors; //don't know if we actually need this but its loaded
 
   public NTCSP(int width, int height)
   {
@@ -70,34 +70,24 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     int l;
     Question q;
 
-    ResourceFinder finder = ResourceFinder.createInstance(resources.Marker.class);
-    InputStream is = finder.findInputStream("Questions.txt");
+    is = rf.findInputStream("Questions.txt");
     in = new BufferedReader(new InputStreamReader(is));
-    
+
     try
     {
 
-      //      rf = ResourceFinder.createInstance(Marker.class);
-      //
-      //      is = rf.findInputStream("Questions.txt");
-      //      in = new BufferedReader(new InputStreamReader(is));
-
-      //   in = new BufferedReader(new FileReader("Questions.txt"));
-
-      line = in.readLine();
-      while (line != null)
+      while ( (line = in.readLine()) != null)
       {
 
         if (Character.isLetter(line.charAt(0)))
         {
           prof = new Professor(line);
           professors.add(prof);
-          line = in.readLine();
           continue;
         }
 
-        l = line.charAt(0);
-        qu = line.substring(line.indexOf('-'), line.length());
+        l = line.charAt(0) - '0';
+        qu = line.substring(line.indexOf('-') + 2, line.length());
         q = new Question(l, qu, prof);
 
         switch (l)
@@ -112,14 +102,18 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
             level3Qs.add(q);
             break;
         }
-
-        line = in.readLine();
       }
     } catch (IOException e)
     {
       e.printStackTrace();
     }
 
+//    testing
+//    System.out.println(professors);
+//    System.out.println(level1Qs);
+//    System.out.println(level2Qs);
+//    System.out.println(level3Qs);
+//     System.out.println(level3Qs.size() + level2Qs.size() + level1Qs.size());
   }
 
   public void init()
