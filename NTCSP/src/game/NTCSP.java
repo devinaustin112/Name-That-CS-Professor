@@ -38,7 +38,7 @@ public class NTCSP extends JApplication
 	JTextField usernameField;
 	JTextArea question;
 	int count;
-	int score;
+	int[] score;
 	Metronome met;
 	Visualization vis;
 	LinkedList<Visualization> profList;
@@ -59,7 +59,11 @@ public class NTCSP extends JApplication
 	{
 		super(width, height);
 		count = 0;
-		score = 0;
+		score = new int[4];
+		score[0] = 0;
+		score[1] = 0;
+		score[2] = 0;
+		score[3] = 0;
 	}
 
 	public static void main(String[] args)
@@ -202,7 +206,7 @@ public class NTCSP extends JApplication
 
 		JTextArea scoreArea = new JTextArea();
 		scoreArea.setEditable(false);
-		scoreArea.setText(username + "'s Score: " + score);
+		scoreArea.setText(username + "'s Score: " + score[0]);
 		scoreArea.setBounds(width / 2, height / 2, 200, 50);
 		content.add(scoreArea);
 
@@ -256,7 +260,7 @@ public class NTCSP extends JApplication
 			{
 
 				question.setText(level1Qs.get(count).getText());
-				score++;
+				score[0]++;
 				content.revalidate();
 				content.repaint();
 			}
@@ -315,7 +319,7 @@ public class NTCSP extends JApplication
 
 		Visualization answer1 = new Visualization();
 		answer1.addMouseListener(this);
-		Content prof1 = cf.createContent("bernstein.jpg");
+		Content prof1 = cf.createContent(professors.get(1).getImage());
 		prof1.setLocation(25, 0);
 		answer1.add(prof1);
 		answer1.getView().setBounds(0, 500, 250, 200);
@@ -324,7 +328,7 @@ public class NTCSP extends JApplication
 
 		Visualization answer2 = new Visualization();
 		answer2.addMouseListener(this);
-		Content prof2 = cf.createContent("aboutabl.jpg");
+		Content prof2 = cf.createContent(professors.get(2).getImage());
 		prof2.setLocation(25, 0);
 		answer2.add(prof2);
 		answer2.getView().setBounds(250, 500, 250, 200);
@@ -333,7 +337,7 @@ public class NTCSP extends JApplication
 
 		Visualization answer3 = new Visualization();
 		answer3.addMouseListener(this);
-		Content prof3 = cf.createContent("stewart.jpg");
+		Content prof3 = cf.createContent(professors.get(3).getImage());
 		prof3.setLocation(25, 0);
 		answer3.add(prof3);
 		answer3.getView().setBounds(500, 500, 250, 200);
@@ -342,7 +346,7 @@ public class NTCSP extends JApplication
 
 		Visualization answer4 = new Visualization();
 		answer4.addMouseListener(this);
-		Content prof4 = cf.createContent("fox.jpg");
+		Content prof4 = cf.createContent(professors.get(4).getImage());
 		prof4.setLocation(25, 0);
 		answer4.add(prof4);
 		answer4.getView().setBounds(750, 500, 250, 200);
