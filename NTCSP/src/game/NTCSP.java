@@ -319,7 +319,7 @@ public class NTCSP extends JApplication
 
 		Visualization answer1 = new Visualization();
 		answer1.addMouseListener(this);
-		Content prof1 = cf.createContent(professors.get(1).getImage());
+		Content prof1 = cf.createContent(level1Qs.get(count).getAnswer().getImage());
 		prof1.setLocation(25, 0);
 		answer1.add(prof1);
 		answer1.getView().setBounds(0, 500, 250, 200);
