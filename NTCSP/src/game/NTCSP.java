@@ -216,6 +216,10 @@ public class NTCSP extends JApplication
 		playAgainButton.setBounds(width / 2, height / 2 + 200, 200, 50);
 		playAgainButton.addActionListener(this);
 		content.add(playAgainButton);
+
+        //Reset score and count to 0
+        count = 0;
+        score[0] = 0;
 	}
 
 	@Override
@@ -237,11 +241,13 @@ public class NTCSP extends JApplication
 			content.add(next);
 
 			 addProfessors();
+
 			question = new JTextArea();
 			question.setEditable(false);
 			question.setText(currQ.getText());
 			question.setLineWrap(true);
 			question.setBounds(100, 300, 400, 50);
+			score[0]++;
 			count++;
 			content.add(question);
 			content.revalidate();
@@ -266,8 +272,8 @@ public class NTCSP extends JApplication
 				score[0]++;
 				content.revalidate();
 				content.repaint();
+                count++;
 			}
-			count++;
 		}
 	}
 
