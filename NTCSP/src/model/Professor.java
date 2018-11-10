@@ -14,15 +14,14 @@ public class Professor
   String name;
   String imageName;
 
-  public Professor(String name) {
+  public Professor(String name)
+  {
     this.name = name;
     String imageTemp = name.toLowerCase();
     this.imageName = imageTemp + ".jpg";
   }
   
-  public String toString() {
-    return "Dr. " + name;
-  }
+  public String toString() { return "Dr. " + name; }
 
   public String getImage() {
     return imageName;

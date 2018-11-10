@@ -48,6 +48,7 @@ public class NTCSP extends JApplication
 	InputStream is;
 	String username;
 	Type t, t1;
+	Question currQ;
 	HashMap<Integer, String> questions;
 	HashMap<Integer, String[]> answers;
 
@@ -64,6 +65,7 @@ public class NTCSP extends JApplication
 		score[1] = 0;
 		score[2] = 0;
 		score[3] = 0;
+		currQ = null;
 	}
 
 	public static void main(String[] args)
@@ -221,6 +223,8 @@ public class NTCSP extends JApplication
 	{
 		JPanel content = (JPanel) getContentPane();
 		String ac = arg0.getActionCommand();
+		//set currQ to hold on to the correct answer
+		currQ = level1Qs.get(count);
 		if (ac.equals("Start") || ac.equals("Play Again"))
 		{
 			// Store username
@@ -233,10 +237,9 @@ public class NTCSP extends JApplication
 			content.add(next);
 
 			 addProfessors();
-
 			question = new JTextArea();
 			question.setEditable(false);
-			question.setText(level1Qs.get(count).getText());
+			question.setText(currQ.getText());
 			question.setLineWrap(true);
 			question.setBounds(100, 300, 400, 50);
 			count++;
@@ -258,8 +261,8 @@ public class NTCSP extends JApplication
 				displayScore();
 			} else
 			{
-
-				question.setText(level1Qs.get(count).getText());
+				//set currQ to the current question to save answer
+				question.setText(currQ.getText());
 				score[0]++;
 				content.revalidate();
 				content.repaint();
@@ -319,7 +322,8 @@ public class NTCSP extends JApplication
 
 		Visualization answer1 = new Visualization();
 		answer1.addMouseListener(this);
-		Content prof1 = cf.createContent(level1Qs.get(count).getAnswer().getImage());
+		//place correct answer
+		Content prof1 = cf.createContent(currQ.getAnswer().getImage());
 		prof1.setLocation(25, 0);
 		answer1.add(prof1);
 		answer1.getView().setBounds(0, 500, 250, 200);
