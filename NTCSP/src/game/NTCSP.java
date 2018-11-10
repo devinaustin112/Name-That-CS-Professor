@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -324,7 +325,14 @@ public class NTCSP extends JApplication
 			}
 		}
 
+		Random rando = new Random();
+		boolean findNewProf = false;
+		int chooseProf;
+
 		profList = new LinkedList<>();
+		Professor[] profs = new Professor[4];
+		profs[0] = currQ.getAnswer();
+		Professor tempProf = null;
 
 		Visualization answer1 = new Visualization();
 		answer1.addMouseListener(this);
@@ -336,27 +344,62 @@ public class NTCSP extends JApplication
 		content.add(answer1.getView());
 		profList.add(answer1);
 
+		while(!findNewProf)
+		{
+			chooseProf = (int) (rando.nextDouble() * professors.size());
+			tempProf = professors.get(chooseProf);
+			if(tempProf != currQ.getAnswer())
+			{
+				profs[1] = tempProf;
+				findNewProf = true;
+			}
+		}
+		findNewProf = false;
+
 		Visualization answer2 = new Visualization();
 		answer2.addMouseListener(this);
-		Content prof2 = cf.createContent(professors.get(2).getImage());
+		Content prof2 = cf.createContent(profs[1].getImage());
 		prof2.setLocation(25, 0);
 		answer2.add(prof2);
 		answer2.getView().setBounds(250, 500, 250, 200);
 		content.add(answer2.getView());
 		profList.add(answer2);
 
+		while(!findNewProf)
+		{
+			chooseProf = (int) (rando.nextDouble() * professors.size());
+			tempProf = professors.get(chooseProf);
+			if(tempProf != currQ.getAnswer() && tempProf != profs[1])
+			{
+				profs[2] = tempProf;
+				findNewProf = true;
+			}
+		}
+		findNewProf = false;
+
 		Visualization answer3 = new Visualization();
 		answer3.addMouseListener(this);
-		Content prof3 = cf.createContent(professors.get(3).getImage());
+		Content prof3 = cf.createContent(profs[2].getImage());
 		prof3.setLocation(25, 0);
 		answer3.add(prof3);
 		answer3.getView().setBounds(500, 500, 250, 200);
 		content.add(answer3.getView());
 		profList.add(answer3);
 
+		while(!findNewProf)
+		{
+			chooseProf = (int) (rando.nextDouble() * professors.size());
+			tempProf = professors.get(chooseProf);
+			if(tempProf != currQ.getAnswer() && tempProf != profs[1] && tempProf != profs[2])
+			{
+				profs[3] = tempProf;
+				findNewProf = true;
+			}
+		}
+
 		Visualization answer4 = new Visualization();
 		answer4.addMouseListener(this);
-		Content prof4 = cf.createContent(professors.get(4).getImage());
+		Content prof4 = cf.createContent(profs[3].getImage());
 		prof4.setLocation(25, 0);
 		answer4.add(prof4);
 		answer4.getView().setBounds(750, 500, 250, 200);
