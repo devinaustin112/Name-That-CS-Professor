@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -47,6 +48,7 @@ public class NTCSP extends JApplication
 	ContentFactory cf;
 	ImageFactory ifa;
 	InputStream is;
+	Random rand;
 	String username;
 	Type t, t1;
 	HashMap<Integer, String> questions;
@@ -61,6 +63,7 @@ public class NTCSP extends JApplication
 		super(width, height);
 		count = 0;
 		score = 0;
+		rand = new Random(0);
 	}
 
 	public static void main(String[] args)
@@ -95,7 +98,6 @@ public class NTCSP extends JApplication
 				{
 					String[] temp = line.split("\\|");
 					prof = new Professor(temp[0]);
-					prof.setImage(temp[1]);
 					professors.add(prof);
 					continue;
 				}
@@ -164,7 +166,6 @@ public class NTCSP extends JApplication
 		JPanel content = (JPanel) getContentPane();
 		if (arg0 < 4450)
 		{
-			System.out.println(arg0);
 			vis.repaint();
 		} else if (arg0 == 5000)
 		{
@@ -322,11 +323,21 @@ public class NTCSP extends JApplication
 		}
 
 		profList = new LinkedList<>();
+		ArrayList<Professor>otherChoices = new ArrayList<>(professors);
+		otherChoices.remove(q.getAnswer());
+		ArrayList<Integer> previous = new ArrayList<>();
+		
+		for(int i = 0; i < 3; i++) {
+			int index = rand.nextInt(10);
+			while(previous.contains(index)) {
+				index = (index + 1) % 10;
+			}
+			previous.add(index);
+		}
 
 		Visualization answer1 = new Visualization();
 		answer1.addMouseListener(this);
 		Content prof1 = cf.createContent(q.getAnswer().getImage());
-		System.out.println(q.getAnswer().getImage());
 		prof1.setLocation(25, 0);
 		answer1.add(prof1);
 		answer1.getView().setBounds(0, 500, 250, 200);
@@ -335,7 +346,7 @@ public class NTCSP extends JApplication
 
 		Visualization answer2 = new Visualization();
 		answer2.addMouseListener(this);
-		Content prof2 = cf.createContent("aboutabl.jpg");
+		Content prof2 = cf.createContent(otherChoices.get(previous.get(0)).getImage());
 		prof2.setLocation(25, 0);
 		answer2.add(prof2);
 		answer2.getView().setBounds(250, 500, 250, 200);
@@ -344,7 +355,7 @@ public class NTCSP extends JApplication
 
 		Visualization answer3 = new Visualization();
 		answer3.addMouseListener(this);
-		Content prof3 = cf.createContent("stewart.jpg");
+		Content prof3 = cf.createContent(otherChoices.get(previous.get(1)).getImage());
 		prof3.setLocation(25, 0);
 		answer3.add(prof3);
 		answer3.getView().setBounds(500, 500, 250, 200);
@@ -353,12 +364,13 @@ public class NTCSP extends JApplication
 
 		Visualization answer4 = new Visualization();
 		answer4.addMouseListener(this);
-		Content prof4 = cf.createContent("fox.jpg");
+		Content prof4 = cf.createContent(otherChoices.get(previous.get(2)).getImage());
 		prof4.setLocation(25, 0);
 		answer4.add(prof4);
 		answer4.getView().setBounds(750, 500, 250, 200);
 		content.add(answer4.getView());
 		profList.add(answer4);
-
+		
+		previous.clear();
 	}
 }
