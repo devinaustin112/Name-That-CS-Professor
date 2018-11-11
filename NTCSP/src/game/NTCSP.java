@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -39,7 +38,7 @@ public class NTCSP extends JApplication
 	JTextField usernameField;
 	JTextArea question;
 	int count;
-	int[] score;
+	int score;
 	Metronome met;
 	Visualization vis;
 	LinkedList<Visualization> profList;
@@ -49,7 +48,6 @@ public class NTCSP extends JApplication
 	InputStream is;
 	String username;
 	Type t, t1;
-	Question currQ;
 	HashMap<Integer, String> questions;
 	HashMap<Integer, String[]> answers;
 
@@ -61,12 +59,7 @@ public class NTCSP extends JApplication
 	{
 		super(width, height);
 		count = 0;
-		score = new int[4];
-		score[0] = 0;
-		score[1] = 0;
-		score[2] = 0;
-		score[3] = 0;
-		currQ = null;
+		score = 0;
 	}
 
 	public static void main(String[] args)
@@ -209,7 +202,7 @@ public class NTCSP extends JApplication
 
 		JTextArea scoreArea = new JTextArea();
 		scoreArea.setEditable(false);
-		scoreArea.setText(username + "'s Score: " + score[0]);
+		scoreArea.setText(username + "'s Score: " + score);
 		scoreArea.setBounds(width / 2, height / 2, 200, 50);
 		content.add(scoreArea);
 
@@ -217,10 +210,6 @@ public class NTCSP extends JApplication
 		playAgainButton.setBounds(width / 2, height / 2 + 200, 200, 50);
 		playAgainButton.addActionListener(this);
 		content.add(playAgainButton);
-
-        //Reset score and count to 0
-        count = 0;
-        score[0] = 0;
 	}
 
 	@Override
@@ -228,8 +217,6 @@ public class NTCSP extends JApplication
 	{
 		JPanel content = (JPanel) getContentPane();
 		String ac = arg0.getActionCommand();
-		//set currQ to hold on to the correct answer
-		currQ = level1Qs.get(count);
 		if (ac.equals("Start") || ac.equals("Play Again"))
 		{
 			// Store username
@@ -245,10 +232,9 @@ public class NTCSP extends JApplication
 
 			question = new JTextArea();
 			question.setEditable(false);
-			question.setText(currQ.getText());
+			question.setText(level1Qs.get(count).getText());
 			question.setLineWrap(true);
 			question.setBounds(100, 300, 400, 50);
-			score[0]++;
 			count++;
 			content.add(question);
 			content.revalidate();
@@ -268,13 +254,13 @@ public class NTCSP extends JApplication
 				displayScore();
 			} else
 			{
-				//set currQ to the current question to save answer
-				question.setText(currQ.getText());
-				score[0]++;
+
+				question.setText(level1Qs.get(count).getText());
+				score++;
 				content.revalidate();
 				content.repaint();
-                count++;
 			}
+			count = (count+1)%level1Qs.size(); //if it gets to the end of the list it starts back at 0
 		}
 	}
 
@@ -325,81 +311,38 @@ public class NTCSP extends JApplication
 			}
 		}
 
-		Random rando = new Random();
-		boolean findNewProf = false;
-		int chooseProf;
-
 		profList = new LinkedList<>();
-		Professor[] profs = new Professor[4];
-		profs[0] = currQ.getAnswer();
-		Professor tempProf = null;
 
 		Visualization answer1 = new Visualization();
 		answer1.addMouseListener(this);
-		//place correct answer
-		Content prof1 = cf.createContent(currQ.getAnswer().getImage());
+		Content prof1 = cf.createContent("bernstein.jpg");
 		prof1.setLocation(25, 0);
 		answer1.add(prof1);
 		answer1.getView().setBounds(0, 500, 250, 200);
 		content.add(answer1.getView());
 		profList.add(answer1);
 
-		while(!findNewProf)
-		{
-			chooseProf = (int) (rando.nextDouble() * professors.size());
-			tempProf = professors.get(chooseProf);
-			if(tempProf != currQ.getAnswer())
-			{
-				profs[1] = tempProf;
-				findNewProf = true;
-			}
-		}
-		findNewProf = false;
-
 		Visualization answer2 = new Visualization();
 		answer2.addMouseListener(this);
-		Content prof2 = cf.createContent(profs[1].getImage());
+		Content prof2 = cf.createContent("aboutabl.jpg");
 		prof2.setLocation(25, 0);
 		answer2.add(prof2);
 		answer2.getView().setBounds(250, 500, 250, 200);
 		content.add(answer2.getView());
 		profList.add(answer2);
 
-		while(!findNewProf)
-		{
-			chooseProf = (int) (rando.nextDouble() * professors.size());
-			tempProf = professors.get(chooseProf);
-			if(tempProf != currQ.getAnswer() && tempProf != profs[1])
-			{
-				profs[2] = tempProf;
-				findNewProf = true;
-			}
-		}
-		findNewProf = false;
-
 		Visualization answer3 = new Visualization();
 		answer3.addMouseListener(this);
-		Content prof3 = cf.createContent(profs[2].getImage());
+		Content prof3 = cf.createContent("stewart.jpg");
 		prof3.setLocation(25, 0);
 		answer3.add(prof3);
 		answer3.getView().setBounds(500, 500, 250, 200);
 		content.add(answer3.getView());
 		profList.add(answer3);
 
-		while(!findNewProf)
-		{
-			chooseProf = (int) (rando.nextDouble() * professors.size());
-			tempProf = professors.get(chooseProf);
-			if(tempProf != currQ.getAnswer() && tempProf != profs[1] && tempProf != profs[2])
-			{
-				profs[3] = tempProf;
-				findNewProf = true;
-			}
-		}
-
 		Visualization answer4 = new Visualization();
 		answer4.addMouseListener(this);
-		Content prof4 = cf.createContent(profs[3].getImage());
+		Content prof4 = cf.createContent("fox.jpg");
 		prof4.setLocation(25, 0);
 		answer4.add(prof4);
 		answer4.getView().setBounds(750, 500, 250, 200);
