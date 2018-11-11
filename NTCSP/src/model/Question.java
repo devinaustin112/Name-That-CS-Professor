@@ -18,6 +18,8 @@ public class Question
     this.questionText = txt;
     this.answer = prof;
   }
+
+  public Professor getAnswer() { return answer; }
   
   public Professor getAnswer() {
 	  return answer;

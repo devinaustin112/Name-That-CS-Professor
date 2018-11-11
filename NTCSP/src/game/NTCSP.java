@@ -269,7 +269,7 @@ public class NTCSP extends JApplication
 				content.revalidate();
 				content.repaint();
 			}
-			count++;
+			count = (count+1)%level1Qs.size(); //if it gets to the end of the list it starts back at 0
 		}
 	}
 
