@@ -19,6 +19,10 @@ public class Question
     this.answer = prof;
   }
   
+  public Professor getAnswer() {
+	  return answer;
+  }
+  
   public String getText() {
     return questionText;
   }

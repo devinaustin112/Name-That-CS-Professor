@@ -12,9 +12,18 @@ public class Professor
 {
   
   String name;
+  String image;
   
   public Professor(String name) {
     this.name = name;
+  }
+  
+  public void setImage(String image) {
+	this.image = image;
+  }
+  
+  public String getImage() {
+	  return image;
   }
   
   public String toString() {
