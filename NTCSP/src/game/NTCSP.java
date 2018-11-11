@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -92,7 +93,9 @@ public class NTCSP extends JApplication
 
 				if (Character.isLetter(line.charAt(0)))
 				{
-					prof = new Professor(line);
+					String[] temp = line.split("\\|");
+					prof = new Professor(temp[0]);
+					prof.setImage(temp[1]);
 					professors.add(prof);
 					continue;
 				}
@@ -119,7 +122,7 @@ public class NTCSP extends JApplication
 			e.printStackTrace();
 		}
 
-//	    testing
+		// testing
 //	    System.out.println(professors);
 //	    System.out.println(level1Qs);
 //	    System.out.println(level2Qs);
@@ -161,6 +164,7 @@ public class NTCSP extends JApplication
 		JPanel content = (JPanel) getContentPane();
 		if (arg0 < 4450)
 		{
+			System.out.println(arg0);
 			vis.repaint();
 		} else if (arg0 == 5000)
 		{
@@ -228,14 +232,19 @@ public class NTCSP extends JApplication
 			next.addActionListener(this);
 			content.add(next);
 
-			 addProfessors();
-
 			question = new JTextArea();
+			question.setBackground(new Color(105, 0, 250));
+			question.setForeground(new Color(255, 255, 255));
 			question.setEditable(false);
-			question.setText(level1Qs.get(count).getText());
+			Question q = level1Qs.get(count);
+			question.setFont(new Font("Times New Roman", Font.BOLD, 40));
+			question.setText(q.getText());
 			question.setLineWrap(true);
-			question.setBounds(100, 300, 400, 50);
+			question.setBounds(0, 0, 1000, 200);
 			count++;
+
+			addProfessors(q);
+
 			content.add(question);
 			content.revalidate();
 			content.repaint();
@@ -243,7 +252,6 @@ public class NTCSP extends JApplication
 		}
 		if (ac.equals("Next Question"))
 		{
-			addProfessors();
 
 			// Display question
 			if (count == 5)
@@ -254,8 +262,9 @@ public class NTCSP extends JApplication
 				displayScore();
 			} else
 			{
-
-				question.setText(level1Qs.get(count).getText());
+				Question q = level1Qs.get(count);
+				question.setText(q.getText());
+				addProfessors(q);
 				score++;
 				content.revalidate();
 				content.repaint();
@@ -279,6 +288,7 @@ public class NTCSP extends JApplication
 	@Override
 	public void mouseEntered(MouseEvent arg0)
 	{
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -299,7 +309,7 @@ public class NTCSP extends JApplication
 		// TODO Auto-generated method stub
 	}
 
-	public void addProfessors()
+	public void addProfessors(Question q)
 	{
 		JPanel content = (JPanel) getContentPane();
 
@@ -315,7 +325,8 @@ public class NTCSP extends JApplication
 
 		Visualization answer1 = new Visualization();
 		answer1.addMouseListener(this);
-		Content prof1 = cf.createContent("bernstein.jpg");
+		Content prof1 = cf.createContent(q.getAnswer().getImage());
+		System.out.println(q.getAnswer().getImage());
 		prof1.setLocation(25, 0);
 		answer1.add(prof1);
 		answer1.getView().setBounds(0, 500, 250, 200);
