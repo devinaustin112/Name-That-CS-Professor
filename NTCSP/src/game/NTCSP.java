@@ -1,7 +1,6 @@
 package game;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -36,10 +35,11 @@ import visual.statik.sampled.ImageFactory;
 public class NTCSP extends JApplication
 		implements MetronomeListener, ActionListener, MouseListener
 {
+	JButton start, next;
 	JTextField usernameField;
 	JTextArea question;
 	int count;
-	int score;
+	int[] score;
 	Metronome met;
 	Visualization vis;
 	LinkedList<Visualization> profList;
@@ -47,12 +47,11 @@ public class NTCSP extends JApplication
 	ContentFactory cf;
 	ImageFactory ifa;
 	InputStream is;
-	Random rand;
 	String username;
 	Type t, t1;
+	Question currQ;
 	HashMap<Integer, String> questions;
 	HashMap<Integer, String[]> answers;
-	VisualizationView chosen, correct;
 
 	ArrayList<Question> level1Qs, level2Qs, level3Qs;
 	ArrayList<Professor> professors; // don't know if we actually need this but
@@ -62,8 +61,12 @@ public class NTCSP extends JApplication
 	{
 		super(width, height);
 		count = 0;
-		score = 0;
-		rand = new Random(0);
+		score = new int[4];
+		score[0] = 0;
+		score[1] = 0;
+		score[2] = 0;
+		score[3] = 0;
+		currQ = null;
 	}
 
 	public static void main(String[] args)
@@ -96,8 +99,7 @@ public class NTCSP extends JApplication
 
 				if (Character.isLetter(line.charAt(0)))
 				{
-					String[] temp = line.split("\\|");
-					prof = new Professor(temp[0]);
+					prof = new Professor(line);
 					professors.add(prof);
 					continue;
 				}
@@ -124,7 +126,7 @@ public class NTCSP extends JApplication
 			e.printStackTrace();
 		}
 
-		// testing
+//	    testing
 //	    System.out.println(professors);
 //	    System.out.println(level1Qs);
 //	    System.out.println(level2Qs);
@@ -138,7 +140,7 @@ public class NTCSP extends JApplication
 		// initialize global attributes
 		met = new Metronome(50);
 		met.addListener(this);
-	
+		met.start();
 		JPanel content = (JPanel) getContentPane();
 		rf = ResourceFinder.createInstance(Marker.class);
 		cf = new ContentFactory(rf);
@@ -158,17 +160,16 @@ public class NTCSP extends JApplication
 
 		// Load questions from file
 		load();
-	  met.start();
 	}
 
 	@Override
 	public void handleTick(int arg0)
 	{
 		JPanel content = (JPanel) getContentPane();
-		if (arg0 < 4200 )
+		if (arg0 < 4450)
 		{
 			vis.repaint();
-		} else if (arg0 == 4700)
+		} else if (arg0 == 5000)
 		{
 			vis.remove(t);
 			vis.add(t1);
@@ -195,7 +196,7 @@ public class NTCSP extends JApplication
 			content.add(usernameField);
 
 			// Create start button
-			JButton start = new JButton("Start");
+			start = new JButton("Start");
 			start.setBounds(width / 2, 750, 500, 50);
 			start.addActionListener(this);
 			content.add(start);
@@ -208,7 +209,7 @@ public class NTCSP extends JApplication
 
 		JTextArea scoreArea = new JTextArea();
 		scoreArea.setEditable(false);
-		scoreArea.setText(username + "'s Score: " + score);
+		scoreArea.setText(username + "'s Score: " + score[0]);
 		scoreArea.setBounds(width / 2, height / 2, 200, 50);
 		content.add(scoreArea);
 
@@ -216,6 +217,10 @@ public class NTCSP extends JApplication
 		playAgainButton.setBounds(width / 2, height / 2 + 200, 200, 50);
 		playAgainButton.addActionListener(this);
 		content.add(playAgainButton);
+
+        //Reset score and count to 0
+        count = 0;
+        score[0] = 0;
 	}
 
 	@Override
@@ -223,63 +228,39 @@ public class NTCSP extends JApplication
 	{
 		JPanel content = (JPanel) getContentPane();
 		String ac = arg0.getActionCommand();
+		//set currQ to hold on to the correct answer
+		currQ = level1Qs.get(count);
 		if (ac.equals("Start") || ac.equals("Play Again"))
 		{
 			// Store username
 			username = usernameField.getText();
-			
-			//Reset score
-			score = 0;
 
 			content.removeAll();
-			JButton submit = new JButton("Submit Choice");
-			submit.setBounds(0, 750, 1000, 50);
-			submit.addActionListener(this);
-			content.add(submit);
+			next = new JButton("Next Question");
+			next.setBounds(0, 750, 1000, 50);
+			next.addActionListener(this);
+			content.add(next);
+
+			 addProfessors();
 
 			question = new JTextArea();
-			question.setBackground(new Color(105, 0, 250));
-			question.setForeground(new Color(255, 255, 255));
 			question.setEditable(false);
-			Question q = level1Qs.get(count);
-			question.setFont(new Font("Times New Roman", Font.BOLD, 40));
-			question.setText(q.getText());
+			question.setText(currQ.getText());
 			question.setLineWrap(true);
-			question.setBounds(0, 0, 1000, 200);
-
-			addProfessors(q);
-
+			question.setBounds(100, 300, 400, 50);
+			score[0]++;
+			count++;
 			content.add(question);
 			content.revalidate();
 			content.repaint();
 			met.stop();
 		}
-		if (ac.equals("Submit Choice"))
-		{
-			count++;
-			content.removeAll();
-			JButton next = new JButton("Next Question");
-			next.setBounds(0, 750, 1000, 50);
-			next.addActionListener(this);
-			Content c;
-			if (chosen == correct)
-			{
-				c = cf.createContent("correct.png");
-				score++;
-			} else
-			{
-				c = cf.createContent("incorrect.png");
-			}
-			vis.add(c);
-			content.add(vis.getView());
-			content.add(next);
-			content.revalidate();
-			content.repaint();
-		}
 		if (ac.equals("Next Question"))
 		{
+			addProfessors();
+
 			// Display question
-			if (count % 5 == 0)
+			if (count == 5)
 			{
 				content.removeAll();
 				content.revalidate();
@@ -287,34 +268,13 @@ public class NTCSP extends JApplication
 				displayScore();
 			} else
 			{
-				// Store username
-				username = usernameField.getText();
-
-				content.removeAll();
-				JButton submit = new JButton("Submit Choice");
-				submit.setBounds(0, 750, 1000, 50);
-				submit.addActionListener(this);
-				content.add(submit);
-
-				question = new JTextArea();
-				question.setBackground(new Color(105, 0, 250));
-				question.setForeground(new Color(255, 255, 255));
-				question.setEditable(false);
-				Question q = level1Qs.get(count);
-				question.setFont(new Font("Times New Roman", Font.BOLD, 40));
-				question.setText(q.getText());
-				question.setLineWrap(true);
-				question.setBounds(0, 0, 1000, 200);
-
-				addProfessors(q);
-
-				content.add(question);
+				//set currQ to the current question to save answer
+				question.setText(currQ.getText());
+				score[0]++;
 				content.revalidate();
 				content.repaint();
-				met.stop();
+                count++;
 			}
-
-			count = count % (level1Qs.size() - 1); // if it gets to the end of the list it starts back at 0
 		}
 	}
 
@@ -326,14 +286,13 @@ public class NTCSP extends JApplication
 			profList.get(i).setBackground(new JPanel().getBackground());
 		}
 
-		chosen = (VisualizationView) arg0.getSource();
-		chosen.setBackground(new Color(105, 0, 250));
+		VisualizationView click = (VisualizationView) arg0.getSource();
+		click.setBackground(new Color(105, 0, 250));
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0)
 	{
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -354,7 +313,7 @@ public class NTCSP extends JApplication
 		// TODO Auto-generated method stub
 	}
 
-	public void addProfessors(Question q)
+	public void addProfessors()
 	{
 		JPanel content = (JPanel) getContentPane();
 
@@ -366,55 +325,86 @@ public class NTCSP extends JApplication
 			}
 		}
 
+		Random rando = new Random();
+		boolean findNewProf = false;
+		int chooseProf;
+
 		profList = new LinkedList<>();
-		ArrayList<Professor> otherChoices = new ArrayList<>(professors);
-		otherChoices.remove(q.getAnswer());
-		ArrayList<Integer> previous = new ArrayList<>();
+		Professor[] profs = new Professor[4];
+		profs[0] = currQ.getAnswer();
+		Professor tempProf;
 
-		Visualization answer;
-		int x = 0;
-		boolean notAdded = true;
-		for (int i = 0; i < 4; i++)
+		Visualization answer1 = new Visualization();
+		answer1.addMouseListener(this);
+		//place correct answer
+		Content prof1 = cf.createContent(currQ.getAnswer().getImage());
+		prof1.setLocation(25, 0);
+		answer1.add(prof1);
+		answer1.getView().setBounds(0, 500, 250, 200);
+		content.add(answer1.getView());
+		profList.add(answer1);
+
+		while(!findNewProf)
 		{
-			// Get random between 0 and 10 non repeating
-			int index = rand.nextInt(10);
-			while (previous.contains(index))
+			chooseProf = (int) (rando.nextDouble() * professors.size());
+			tempProf = professors.get(chooseProf);
+			if(tempProf != currQ.getAnswer())
 			{
-				index = (index + 1) % 11;
-			}
-			previous.add(index);
-
-			// If random index is greater than or equal to 5 and not added
-			// add the correct answer to vis. Otherwise add other choices
-
-			// Code duplication
-			Content prof;
-			if (index >= 5 && notAdded || i == 3 && notAdded)
-			{
-				prof = cf.createContent(q.getAnswer().getImage());
-				answer = new Visualization();
-				answer.addMouseListener(this);
-				prof.setLocation(25, 0);
-				answer.add(prof);
-				answer.getView().setBounds(x, 500, 250, 200);
-				correct = answer.getView();
-				content.add(answer.getView());
-				profList.add(answer);
-				x = x + 250;
-				notAdded = false;
-			} else
-			{
-				prof = cf.createContent(otherChoices.get(index).getImage());
-				answer = new Visualization();
-				answer.addMouseListener(this);
-				prof.setLocation(25, 0);
-				answer.add(prof);
-				answer.getView().setBounds(x, 500, 250, 200);
-				content.add(answer.getView());
-				profList.add(answer);
-				x = x + 250;
+				profs[1] = tempProf;
+				findNewProf = true;
 			}
 		}
-		previous.clear();
+		findNewProf = false;
+
+		Visualization answer2 = new Visualization();
+		answer2.addMouseListener(this);
+		Content prof2 = cf.createContent(profs[1].getImage());
+		prof2.setLocation(25, 0);
+		answer2.add(prof2);
+		answer2.getView().setBounds(250, 500, 250, 200);
+		content.add(answer2.getView());
+		profList.add(answer2);
+
+		while(!findNewProf)
+		{
+			chooseProf = (int) (rando.nextDouble() * professors.size());
+			tempProf = professors.get(chooseProf);
+			if(tempProf != currQ.getAnswer() && tempProf != profs[1])
+			{
+				profs[2] = tempProf;
+				findNewProf = true;
+			}
+		}
+		findNewProf = false;
+
+		Visualization answer3 = new Visualization();
+		answer3.addMouseListener(this);
+		Content prof3 = cf.createContent(profs[2].getImage());
+		prof3.setLocation(25, 0);
+		answer3.add(prof3);
+		answer3.getView().setBounds(500, 500, 250, 200);
+		content.add(answer3.getView());
+		profList.add(answer3);
+
+		while(!findNewProf)
+		{
+			chooseProf = (int) (rando.nextDouble() * professors.size());
+			tempProf = professors.get(chooseProf);
+			if(tempProf != currQ.getAnswer() && tempProf != profs[1] && tempProf != profs[2])
+			{
+				profs[3] = tempProf;
+				findNewProf = true;
+			}
+		}
+
+		Visualization answer4 = new Visualization();
+		answer4.addMouseListener(this);
+		Content prof4 = cf.createContent(profs[3].getImage());
+		prof4.setLocation(25, 0);
+		answer4.add(prof4);
+		answer4.getView().setBounds(750, 500, 250, 200);
+		content.add(answer4.getView());
+		profList.add(answer4);
+
 	}
 }
