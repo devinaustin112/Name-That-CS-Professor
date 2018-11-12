@@ -138,7 +138,7 @@ public class NTCSP extends JApplication
 		// initialize global attributes
 		met = new Metronome(50);
 		met.addListener(this);
-		met.start();
+	
 		JPanel content = (JPanel) getContentPane();
 		rf = ResourceFinder.createInstance(Marker.class);
 		cf = new ContentFactory(rf);
@@ -158,16 +158,17 @@ public class NTCSP extends JApplication
 
 		// Load questions from file
 		load();
+	  met.start();
 	}
 
 	@Override
 	public void handleTick(int arg0)
 	{
 		JPanel content = (JPanel) getContentPane();
-		if (arg0 < 4500)
+		if (arg0 < 4200 )
 		{
 			vis.repaint();
-		} else if (arg0 == 5000)
+		} else if (arg0 == 4700)
 		{
 			vis.remove(t);
 			vis.add(t1);
@@ -310,9 +311,7 @@ public class NTCSP extends JApplication
 				met.stop();
 			}
 
-			count = count % (level1Qs.size() - 1); // if it gets to the end of
-												   // the list it starts back
-												   // at 0
+			count = count % (level1Qs.size() - 1); // if it gets to the end of the list it starts back at 0
 		}
 	}
 
