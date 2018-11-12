@@ -136,7 +136,7 @@ public class NTCSP extends JApplication
     {
 
         // initialize global attributes
-        met = new Metronome(50);
+        met = new Metronome(150);
         met.addListener(this);
 
         JPanel content = (JPanel) getContentPane();
@@ -165,18 +165,18 @@ public class NTCSP extends JApplication
     public void handleTick(int arg0)
     {
         JPanel content = (JPanel) getContentPane();
-        if (arg0 < 4200 )
+        if (arg0 < 3900 )
         {
             vis.repaint();
-        } else if (arg0 == 4700)
+        } else if (arg0 == 4200)
         {
             vis.remove(t);
             vis.add(t1);
             vis.repaint();
-        } else if (arg0 > 5000 && arg0 < 8750)
+        } else if (arg0 > 4200 && arg0 < 7950)
         {
             vis.repaint();
-        } else if (arg0 == 9500)
+        } else if (arg0 == 8400)
         {
             Content c = cf.createContent("NameThatCSProfessor.png");
             vis.remove(t1);
@@ -327,7 +327,7 @@ public class NTCSP extends JApplication
         }
 
         chosen = (VisualizationView) arg0.getSource();
-        chosen.setBackground(new Color(105, 0, 250));
+        chosen.setBackground(new Color(104, 23, 250));
     }
 
     @Override

@@ -30,7 +30,7 @@ public class Type extends visual.statik.sampled.Content
 		Font f = new Font("Times New Roman", Font.PLAIN, 18);
 		g2.setFont(f);
 		g2.setColor(Color.WHITE);
-		g2.drawString(s.substring(0, iteration / 3), 465, y);
+		g2.drawString(s.substring(0, iteration), 465, y);
 		iteration++ ;
 	}
 }
