@@ -227,6 +227,9 @@ public class NTCSP extends JApplication
 		{
 			// Store username
 			username = usernameField.getText();
+			
+			//Reset score
+			score = 0;
 
 			content.removeAll();
 			JButton submit = new JButton("Submit Choice");
