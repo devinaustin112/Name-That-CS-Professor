@@ -1,44 +1,43 @@
-Bowers
+Bowers|bowers.jpg
 1 - I named my child after a Lord of the Rings character
 2 - My interests lie in Compuational Geometry
 3 - I have lived in in Uganda
-Lam
+Lam|lam.jpg
 1 - My research lies in high-performance computing
 2 - I got my BS in Computer Science from JMU
 3 - I was a deacon while I was in grad school
-Bernstein
+Bernstein|bernstein.jpg
 1 - I moved to Harrisonburg for my wife
 2 - I taught at MIT
 3 - I am from New York
-Mayfield
+Mayfield|mayfield.jpg
 1 - My research is focused on databases and k-12 educational programs
 2 - I was an intern at Google
 3 - I have a Bachelor of Arts in German
-Stewart
+Stewart|stewart.jpg
 1 - I just joined JMU in 2017
 2 - I have worked as a file clerk in the past
 3 - I have a dog named Barfi
-Weikle
+Weikle|weikle.jpg
 1 - My BS degree is in Electrical Engineering
 2 - I taught at Eastern Mennonite University
 3 - I am from the midwest
-Norton
+Norton|norton.jpg
 1 - I have a PHD in Music History
 2 - I teach in 2 departments
 3 - I have a Bachelors of Music Ed in Voice
-0
-Kirkpatrick
+Kirkpatrick|kirkpatrick.jpg
 1 -	Some of my research focuses on methods in CS education
 2 - I enjoy listening to Classical Music, Rock and Jazz
 3 - I minored in Religion during my undergrad
-Fox
+Fox|fox.jpg
 1 - I am the undergraduate program director
 2 - I have a B.A in Philosophy and English
 3 - I worked at Bell Laboratories
-Aboutabl
+Aboutabl|aboutabl.jpg
 1 - I did my undergrad in Egypt
 2 - I taught in Strayer University
 3 - I worked at Honeywell
-Laycock
+Laycock|laycock.jpg
 1 - I am the CS Department office manager
 3 - I was in the military
