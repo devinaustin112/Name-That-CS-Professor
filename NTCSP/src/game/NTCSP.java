@@ -178,25 +178,25 @@ public class NTCSP extends JApplication
             vis.repaint();
         } else if (arg0 == 8400)
         {
-            Content c = cf.createContent("NameThatCSProfessor.png");
+            Content c = cf.createContent("NTCSP.png");
             vis.remove(t1);
             vis.add(c);
-            vis.getView().setBounds(0, 0, 1000, 750);
+            vis.getView().setBounds(0, 0, 1000, 700);
 
             // Create user name label
             JLabel usernameLabel = new JLabel("Enter User Name:",
                     JLabel.CENTER);
-            usernameLabel.setBounds(0, 750, 150, 50);
+            usernameLabel.setBounds(0, 700, 150, 100);
             content.add(usernameLabel);
 
             // Create user name entry
             usernameField = new JTextField();
-            usernameField.setBounds(150, 750, 350, 50);
+            usernameField.setBounds(150, 700, 350, 100);
             content.add(usernameField);
 
             // Create start button
             JButton start = new JButton("Start");
-            start.setBounds(width / 2, 750, 500, 50);
+            start.setBounds(width / 2, 700, 500, 100);
             start.addActionListener(this);
             content.add(start);
         }
@@ -233,7 +233,7 @@ public class NTCSP extends JApplication
 
             content.removeAll();
             JButton submit = new JButton("Submit Choice");
-            submit.setBounds(0, 750, 1000, 50);
+            submit.setBounds(0, 700, 1000, 100);
             submit.addActionListener(this);
             content.add(submit);
 
@@ -259,7 +259,7 @@ public class NTCSP extends JApplication
             count++;
             content.removeAll();
             JButton next = new JButton("Next Question");
-            next.setBounds(0, 750, 1000, 50);
+            next.setBounds(0, 700, 1000, 100);
             next.addActionListener(this);
             Content c;
             if (chosen == correct)
@@ -292,7 +292,7 @@ public class NTCSP extends JApplication
 
                 content.removeAll();
                 JButton submit = new JButton("Submit Choice");
-                submit.setBounds(0, 750, 1000, 50);
+                submit.setBounds(0, 700, 1000, 100);
                 submit.addActionListener(this);
                 content.add(submit);
 
@@ -396,7 +396,7 @@ public class NTCSP extends JApplication
                 answer.addMouseListener(this);
                 prof.setLocation(25, 0);
                 answer.add(prof);
-                answer.getView().setBounds(x, 500, 250, 200);
+                answer.getView().setBounds(x, 450, 250, 200);
                 correct = answer.getView();
                 content.add(answer.getView());
                 profList.add(answer);
@@ -409,7 +409,7 @@ public class NTCSP extends JApplication
                 answer.addMouseListener(this);
                 prof.setLocation(25, 0);
                 answer.add(prof);
-                answer.getView().setBounds(x, 500, 250, 200);
+                answer.getView().setBounds(x, 450, 250, 200);
                 content.add(answer.getView());
                 profList.add(answer);
                 x = x + 250;
