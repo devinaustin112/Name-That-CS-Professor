@@ -1,6 +1,7 @@
 package game;
 
-import java.awt.Color;
+import
+        java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ import event.MetronomeListener;
 import io.ResourceFinder;
 import resources.Marker;
 import visual.*;
+import visual.dynamic.described.Stage;
 import visual.statik.sampled.Content;
 import visual.statik.sampled.ContentFactory;
 import visual.statik.sampled.ImageFactory;
@@ -42,6 +44,7 @@ public class NTCSP extends JApplication
     int score;
     Metronome met;
     Visualization vis;
+    Stage stage;
     LinkedList<Visualization> profList;
     ResourceFinder rf;
     ContentFactory cf;
@@ -144,20 +147,43 @@ public class NTCSP extends JApplication
         cf = new ContentFactory(rf);
         ifa = new ImageFactory(rf);
 
-        t = new Type("Make Name That CS Professor", 230);
-        t.setImage(ifa.createBufferedImage("Term44.png"));
-        t1 = new Type("./Name That CS Professor", 340);
-        t1.setImage(ifa.createBufferedImage("Term20.png"));
+        Content c = cf.createContent("professors.png");
+        MovingImage mi1 = new MovingImage(c, 0, 0);
+        MovingImage mi2 = new MovingImage(c, 1960, 0);
+        stage = new Stage(100);
+        VisualizationView stageView = stage.getView();
+        stageView.setBounds(0, 550, 1000, 200);
 
         vis = new Visualization();
-        VisualizationView visView = vis.getView();
-        visView.setBounds(0, 0, 1000, 800);
-        vis.add(t);
+        Content home = cf.createContent("NTCSP-1.png");
+        vis.add(home);
+        vis.getView().setBounds(0, 0, 1000, 550);
 
-        content.add(visView);
+        stage.addView(vis.getView());
+        stage.add(mi1);
+        stage.add(mi2);
+        content.add(stage.getView());
+        content.add(vis.getView());
+
+        // Create user name label
+        JLabel usernameLabel = new JLabel("Enter User Name:", JLabel.CENTER);
+        usernameLabel.setBounds(0, 750, 150, 50);
+        content.add(usernameLabel);
+
+        // Create user name entry
+        usernameField = new JTextField();
+        usernameField.setBounds(150, 750, 350, 50);
+        content.add(usernameField);
+
+            // Create start button
+        JButton start = new JButton("Start");
+        start.setBounds(width / 2, 750, 500, 50);
+        start.addActionListener(this);
+        content.add(start);
 
         // Load questions from file
         load();
+        stage.start();
         met.start();
     }
 
@@ -165,41 +191,6 @@ public class NTCSP extends JApplication
     public void handleTick(int arg0)
     {
         JPanel content = (JPanel) getContentPane();
-        if (arg0 < 3900 )
-        {
-            vis.repaint();
-        } else if (arg0 == 4200)
-        {
-            vis.remove(t);
-            vis.add(t1);
-            vis.repaint();
-        } else if (arg0 > 4200 && arg0 < 7950)
-        {
-            vis.repaint();
-        } else if (arg0 == 8400)
-        {
-            Content c = cf.createContent("NTCSP.png");
-            vis.remove(t1);
-            vis.add(c);
-            vis.getView().setBounds(0, 0, 1000, 700);
-
-            // Create user name label
-            JLabel usernameLabel = new JLabel("Enter User Name:",
-                    JLabel.CENTER);
-            usernameLabel.setBounds(0, 700, 150, 100);
-            content.add(usernameLabel);
-
-            // Create user name entry
-            usernameField = new JTextField();
-            usernameField.setBounds(150, 700, 350, 100);
-            content.add(usernameField);
-
-            // Create start button
-            JButton start = new JButton("Start");
-            start.setBounds(width / 2, 700, 500, 100);
-            start.addActionListener(this);
-            content.add(start);
-        }
     }
 
     public void displayScore()
@@ -233,7 +224,7 @@ public class NTCSP extends JApplication
 
             content.removeAll();
             JButton submit = new JButton("Submit Choice");
-            submit.setBounds(0, 700, 1000, 100);
+            submit.setBounds(0, 750, 1000, 50);
             submit.addActionListener(this);
             content.add(submit);
 
@@ -259,7 +250,7 @@ public class NTCSP extends JApplication
             count++;
             content.removeAll();
             JButton next = new JButton("Next Question");
-            next.setBounds(0, 700, 1000, 100);
+            next.setBounds(0, 750, 1000, 50);
             next.addActionListener(this);
             Content c;
             if (chosen == correct)
@@ -270,6 +261,7 @@ public class NTCSP extends JApplication
             {
                 c = cf.createContent("incorrect.png");
             }
+            vis.getView().setBounds(0, 0, 1000, 750);
             vis.add(c);
             content.add(vis.getView());
             content.add(next);
@@ -292,7 +284,7 @@ public class NTCSP extends JApplication
 
                 content.removeAll();
                 JButton submit = new JButton("Submit Choice");
-                submit.setBounds(0, 700, 1000, 100);
+                submit.setBounds(0, 750, 1000, 50);
                 submit.addActionListener(this);
                 content.add(submit);
 
