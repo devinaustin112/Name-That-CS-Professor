@@ -228,19 +228,28 @@ public class NTCSP extends JApplication
             submit.addActionListener(this);
             content.add(submit);
 
+            Content qContent = cf.createContent("question.png");
+
+            vis = new Visualization();
+            vis.add(qContent);
+            vis.getView().setBounds(0, 0, 1000, 300);
+
+
             question = new JTextArea();
             question.setBackground(new Color(105, 0, 250));
-            question.setForeground(new Color(255, 255, 255));
+            question.setForeground(new Color(0, 0, 0));
             question.setEditable(false);
             Question q = level1Qs.get(count);
             question.setFont(new Font("Times New Roman", Font.BOLD, 40));
             question.setText(q.getText());
             question.setLineWrap(true);
-            question.setBounds(0, 0, 1000, 200);
+            question.setBounds(350, 100, 600, 200);
+            question.setOpaque(false);
 
             addProfessors(q);
 
             content.add(question);
+            content.add(vis.getView());
             content.revalidate();
             content.repaint();
             met.stop();
@@ -279,28 +288,34 @@ public class NTCSP extends JApplication
                 displayScore();
             } else
             {
-                // Store username
-                username = usernameField.getText();
-
                 content.removeAll();
                 JButton submit = new JButton("Submit Choice");
                 submit.setBounds(0, 750, 1000, 50);
                 submit.addActionListener(this);
                 content.add(submit);
 
+                Content qContent = cf.createContent("question.png");
+
+                vis = new Visualization();
+                vis.add(qContent);
+                vis.getView().setBounds(0, 0, 1000, 300);
+
+
                 question = new JTextArea();
                 question.setBackground(new Color(105, 0, 250));
-                question.setForeground(new Color(255, 255, 255));
+                question.setForeground(new Color(0, 0, 0));
                 question.setEditable(false);
                 Question q = level1Qs.get(count);
                 question.setFont(new Font("Times New Roman", Font.BOLD, 40));
                 question.setText(q.getText());
                 question.setLineWrap(true);
-                question.setBounds(0, 0, 1000, 200);
+                question.setBounds(350, 100, 600, 200);
+                question.setOpaque(false);
 
                 addProfessors(q);
 
                 content.add(question);
+                content.add(vis.getView());
                 content.revalidate();
                 content.repaint();
                 met.stop();
