@@ -1,8 +1,6 @@
 package game;
 
-import
-        java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -52,7 +50,6 @@ public class NTCSP extends JApplication
     InputStream is;
     Random rand;
     String username;
-    Type t, t1;
     HashMap<Integer, String> questions;
     HashMap<Integer, String[]> answers;
     VisualizationView chosen, correct;
@@ -150,7 +147,7 @@ public class NTCSP extends JApplication
         Content c = cf.createContent("professors.png");
         MovingImage mi1 = new MovingImage(c, 0, 0);
         MovingImage mi2 = new MovingImage(c, 1960, 0);
-        stage = new Stage(100);
+        stage = new Stage(50);
         VisualizationView stageView = stage.getView();
         stageView.setBounds(0, 550, 1000, 200);
 
@@ -197,14 +194,39 @@ public class NTCSP extends JApplication
     {
         JPanel content = (JPanel) getContentPane();
 
-        JTextArea scoreArea = new JTextArea();
+        Content c = cf.createContent("score.png");
+        vis = new Visualization();
+        vis.add(c);
+        vis.getView().setBounds(0, 0, 1000, 750);
+
+        JTextField nameArea = new JTextField();
+        nameArea.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        nameArea.setForeground(Color.white);
+        nameArea.setOpaque(false);
+        nameArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        nameArea.setHorizontalAlignment(JTextField.CENTER);
+        nameArea.setEditable(false);
+        nameArea.setText(username + "'s Score");
+        nameArea.setBounds(0, 0, 1000, 100);
+
+
+
+        JTextField scoreArea = new JTextField();
+        scoreArea.setFont(new Font("Times New Roman", Font.BOLD, 200));
+        scoreArea.setForeground(Color.black);
+        scoreArea.setOpaque(false);
+        scoreArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        scoreArea.setHorizontalAlignment(JTextField.CENTER);
         scoreArea.setEditable(false);
-        scoreArea.setText(username + "'s Score: " + score);
-        scoreArea.setBounds(width / 2, height / 2, 200, 50);
+        scoreArea.setText(score + "/5");
+        scoreArea.setBounds(0, 200, 1000, 400);
+
         content.add(scoreArea);
+        content.add(nameArea);
+        content.add(vis.getView());
 
         JButton playAgainButton = new JButton("Play Again");
-        playAgainButton.setBounds(width / 2, height / 2 + 200, 200, 50);
+        playAgainButton.setBounds(0, 750, 1000, 50);
         playAgainButton.addActionListener(this);
         content.add(playAgainButton);
     }
