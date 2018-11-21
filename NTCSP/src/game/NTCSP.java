@@ -50,8 +50,10 @@ public class NTCSP extends JApplication
     InputStream is;
     Random rand;
     String username;
+    Professor correctProfessor;
     HashMap<Integer, String> questions;
     HashMap<Integer, String[]> answers;
+    HashMap<Visualization, Professor> answerToProfessor;
     VisualizationView chosen, correct;
 
     ArrayList<Question> level1Qs, level2Qs, level3Qs;
@@ -181,7 +183,6 @@ public class NTCSP extends JApplication
         // Load questions from file
         load();
         stage.start();
-        met.start();
     }
 
     @Override
@@ -208,8 +209,6 @@ public class NTCSP extends JApplication
         nameArea.setEditable(false);
         nameArea.setText(username + "'s Score");
         nameArea.setBounds(0, 0, 1000, 100);
-
-
 
         JTextField scoreArea = new JTextField();
         scoreArea.setFont(new Font("Times New Roman", Font.BOLD, 200));
@@ -262,6 +261,7 @@ public class NTCSP extends JApplication
             question.setForeground(new Color(0, 0, 0));
             question.setEditable(false);
             Question q = level1Qs.get(count);
+            correctProfessor = q.getAnswer();
             question.setFont(new Font("Times New Roman", Font.BOLD, 40));
             question.setText(q.getText());
             question.setLineWrap(true);
@@ -286,18 +286,25 @@ public class NTCSP extends JApplication
             Content c;
             if (chosen == correct)
             {
-                c = cf.createContent("correct.png");
                 score++;
-            } else
-            {
-                c = cf.createContent("incorrect.png");
             }
-            vis.getView().setBounds(0, 0, 1000, 750);
-            vis.add(c);
+
+            TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
+
+            stage = new Stage(50);
+            stage.getView().setBounds(0, 550, 200, 200);
+            stage.add(cf.createContent(correctProfessor.getHeadImageName()));
+            stage.add(tp);
+
+
+
+            content.setBackground(Color.white);
+            content.add(stage.getView());
             content.add(vis.getView());
             content.add(next);
             content.revalidate();
             content.repaint();
+            stage.start();
         }
         if (ac.equals("Next Question"))
         {
@@ -330,6 +337,7 @@ public class NTCSP extends JApplication
                 Question q = level1Qs.get(count);
                 question.setFont(new Font("Times New Roman", Font.BOLD, 40));
                 question.setText(q.getText());
+                correctProfessor = q.getAnswer();
                 question.setLineWrap(true);
                 question.setBounds(350, 100, 600, 200);
                 question.setOpaque(false);
@@ -409,7 +417,7 @@ public class NTCSP extends JApplication
             int index = rand.nextInt(10);
             while (previous.contains(index))
             {
-                index = (index + 1) % 11;
+                index = (index + 1) % 10;
             }
             previous.add(index);
 

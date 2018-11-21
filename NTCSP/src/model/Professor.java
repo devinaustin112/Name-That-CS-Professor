@@ -12,12 +12,18 @@ public class Professor
   
   String name;
   String imageName;
+  String mouthImageName;
+  String headImageName;
 
   public Professor(String name)
   {
     this.name = name;
     String imageTemp = name.toLowerCase();
     this.imageName = imageTemp + ".jpg";
+    this.headImageName = imageTemp.substring(0, 1).toUpperCase()
+            + imageTemp.substring(1,imageTemp.length()) + ".png";
+    this.mouthImageName = imageTemp.substring(0, 1).toUpperCase()
+            + imageTemp.substring(1,imageTemp.length()) + "Mouth.png";
   }
   
   public String toString() { return "Dr. " + name; }
@@ -26,4 +32,11 @@ public class Professor
     return imageName;
   }
 
+  public String getHeadImageName() {
+    return headImageName;
+  }
+
+  public String getMouthImageName() {
+    return mouthImageName;
+  }
 }
