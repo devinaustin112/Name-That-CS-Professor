@@ -291,7 +291,7 @@ public class NTCSP extends JApplication
 
             TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
 
-            stage = new Stage(50);
+            stage = new Stage(65);
             stage.getView().setBounds(0, 550, 200, 200);
             stage.add(cf.createContent(correctProfessor.getHeadImageName()));
             stage.add(tp);
