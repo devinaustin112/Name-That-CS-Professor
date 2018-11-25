@@ -8,15 +8,16 @@ import java.awt.event.MouseListener;
 
 import model.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -36,6 +37,7 @@ import visual.statik.sampled.ImageFactory;
 public class NTCSP extends JApplication
         implements MetronomeListener, ActionListener, MouseListener
 {
+    Clip clip;
     JTextField usernameField;
     JTextArea question;
     int count;
@@ -230,6 +232,44 @@ public class NTCSP extends JApplication
         content.add(playAgainButton);
     }
 
+    public Clip initClip(String file)
+    {
+        Clip clip;
+        try
+        {
+            AudioInputStream stream;
+            BufferedInputStream bis;
+            InputStream is;
+            ResourceFinder finder;
+
+            // Get the resource
+            finder = ResourceFinder.createInstance(resources.Marker.class);
+            is     = finder.findInputStream(file);
+
+            // Decorate the InputStream as a BufferedInputStream
+            // so mark and reset are supported
+            bis = new BufferedInputStream(is);
+
+            // Create an AudioInputStream from the InputStream
+            stream = AudioSystem.getAudioInputStream(bis);
+
+            // Create a Clip (i.e., a Line that can be pre-loaded)
+            clip = AudioSystem.getClip();
+
+            // Tell the Clip to acquire any required system
+            // resources and become operational
+            clip.open(stream);
+
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+        catch (Exception e)
+        {
+            clip = null;
+        }
+
+        return clip;
+    }
+
     @Override
     public void actionPerformed(ActionEvent arg0)
     {
@@ -296,8 +336,6 @@ public class NTCSP extends JApplication
             stage.add(cf.createContent(correctProfessor.getHeadImageName()));
             stage.add(tp);
 
-
-
             content.setBackground(Color.white);
             content.add(stage.getView());
             content.add(vis.getView());
@@ -305,9 +343,14 @@ public class NTCSP extends JApplication
             content.revalidate();
             content.repaint();
             stage.start();
+
+            clip = initClip(correctProfessor.getAudioName());
+            clip.start();
         }
+
         if (ac.equals("Next Question"))
         {
+            clip.stop();
             // Display question
             if (count % 5 == 0)
             {
@@ -315,7 +358,8 @@ public class NTCSP extends JApplication
                 content.revalidate();
                 content.repaint();
                 displayScore();
-            } else
+            }
+            else
             {
                 content.removeAll();
                 JButton submit = new JButton("Submit Choice");
@@ -328,7 +372,6 @@ public class NTCSP extends JApplication
                 vis = new Visualization();
                 vis.add(qContent);
                 vis.getView().setBounds(0, 0, 1000, 300);
-
 
                 question = new JTextArea();
                 question.setBackground(new Color(105, 0, 250));
