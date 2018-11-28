@@ -330,21 +330,14 @@ public class NTCSP extends JApplication
             next.addActionListener(this);
             Content c;
 
-            if (correctProfessor.toString().equals("Dr. Bernstein"))
+            if (chosen == correct)
             {
-                if (chosen == correct)
-                {
-                    clip = initClip(correctProfessor.getAudioNameCorrect());
-                    score++;
-                }
-                else
-                {
-                    clip = initClip(correctProfessor.getAudioNameIncorrect());
-                }
+                //clip = initClip(correctProfessor.getAudioNameCorrect());
+                score++;
             }
             else
             {
-                clip = initClip(correctProfessor.getGenericAudio());
+                //clip = initClip(correctProfessor.getAudioNameIncorrect());
             }
 
             TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
@@ -363,14 +356,14 @@ public class NTCSP extends JApplication
             stage.start();
 
             //clip = initClip(correctProfessor.getAudioName());
-            clip.start();
+            //clip.start();
 
             //hello
         }
 
         if (ac.equals("Next Question"))
         {
-            clip.stop();
+            //clip.stop();
             // Display question
             if (count % 5 == 0)
             {
