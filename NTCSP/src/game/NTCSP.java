@@ -67,7 +67,7 @@ public class NTCSP extends JApplication
         super(width, height);
         count = 0;
         score = 0;
-        rand = new Random(0);
+        rand = new Random(System.currentTimeMillis());
     }
 
     public static void main(String[] args)
@@ -300,7 +300,11 @@ public class NTCSP extends JApplication
             question.setBackground(new Color(105, 0, 250));
             question.setForeground(new Color(0, 0, 0));
             question.setEditable(false);
-            Question q = level1Qs.get(count);
+
+            int randQ = (int)(rand.nextDouble() * level1Qs.size());
+            Question q = level1Qs.get(randQ);
+            level1Qs.remove(randQ);
+
             correctProfessor = q.getAnswer();
             question.setFont(new Font("Times New Roman", Font.BOLD, 40));
             question.setText(q.getText());
@@ -344,15 +348,15 @@ public class NTCSP extends JApplication
             content.repaint();
             stage.start();
 
-            clip = initClip(correctProfessor.getAudioName());
-            clip.start();
+            //clip = initClip(correctProfessor.getAudioName());
+            //clip.start();
 
             //hello
         }
 
         if (ac.equals("Next Question"))
         {
-            clip.stop();
+            //clip.stop();
             // Display question
             if (count % 5 == 0)
             {
@@ -360,6 +364,7 @@ public class NTCSP extends JApplication
                 content.revalidate();
                 content.repaint();
                 displayScore();
+                load();
             }
             else
             {
@@ -379,7 +384,11 @@ public class NTCSP extends JApplication
                 question.setBackground(new Color(105, 0, 250));
                 question.setForeground(new Color(0, 0, 0));
                 question.setEditable(false);
-                Question q = level1Qs.get(count);
+
+                int randQ = (int)(rand.nextDouble() * level1Qs.size());
+                Question q = level1Qs.get(randQ);
+                level1Qs.remove(randQ);
+
                 question.setFont(new Font("Times New Roman", Font.BOLD, 40));
                 question.setText(q.getText());
                 correctProfessor = q.getAnswer();
@@ -459,7 +468,7 @@ public class NTCSP extends JApplication
         for (int i = 0; i < 4; i++)
         {
             // Get random between 0 and 10 non repeating
-            int index = rand.nextInt(10);
+            int index = (int)(rand.nextDouble() * 10);
             while (previous.contains(index))
             {
                 index = (index + 1) % 10;
