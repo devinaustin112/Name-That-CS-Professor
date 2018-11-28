@@ -346,6 +346,8 @@ public class NTCSP extends JApplication
 
             clip = initClip(correctProfessor.getAudioName());
             clip.start();
+
+            //hello
         }
 
         if (ac.equals("Next Question"))
