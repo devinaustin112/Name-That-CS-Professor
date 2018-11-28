@@ -264,6 +264,7 @@ public class NTCSP extends JApplication
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             clip = null;
         }
 
@@ -328,9 +329,15 @@ public class NTCSP extends JApplication
             next.setBounds(0, 750, 1000, 50);
             next.addActionListener(this);
             Content c;
+
             if (chosen == correct)
             {
+                clip = initClip(correctProfessor.getAudioNameCorrect());
                 score++;
+            }
+            else
+            {
+                clip = initClip(correctProfessor.getAudioNameIncorrect());
             }
 
             TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);

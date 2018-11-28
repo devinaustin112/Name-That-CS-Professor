@@ -14,7 +14,9 @@ public class Professor
   String imageName;
   String mouthImageName;
   String headImageName;
-  String audioName;
+  String audioNameCorrect;
+  String audioNameIncorrect;
+  String genericAudio;
 
   public Professor(String name)
   {
@@ -25,7 +27,9 @@ public class Professor
             + imageTemp.substring(1,imageTemp.length()) + ".png";
     this.mouthImageName = imageTemp.substring(0, 1).toUpperCase()
             + imageTemp.substring(1,imageTemp.length()) + "Mouth.png";
-    this.audioName = name + ".wav";
+    this.audioNameCorrect = name + "Correct.wav";
+    this.audioNameIncorrect = name + "Incorrect.wav";
+    this.genericAudio = name + ".wav";
   }
   
   public String toString() { return "Dr. " + name; }
@@ -42,5 +46,9 @@ public class Professor
     return mouthImageName;
   }
 
-  public String getAudioName() { return audioName; }
+  public String getAudioNameCorrect() { return audioNameCorrect; }
+
+  public String getAudioNameIncorrect() { return audioNameIncorrect; }
+
+  public String getGenericAudio() { return genericAudio; }
 }
