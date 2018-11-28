@@ -332,12 +332,20 @@ public class NTCSP extends JApplication
 
             if (chosen == correct)
             {
-                //clip = initClip(correctProfessor.getAudioNameCorrect());
+                if(correctProfessor.toString().equals("Dr. Bernstein")) {
+                    //clip = initClip(correctProfessor.getAudioNameCorrect());
+                } else {
+                    //clip = initClip(correctProfessor.getGenericAudio());
+                }
                 score++;
             }
             else
             {
-                //clip = initClip(correctProfessor.getAudioNameIncorrect());
+                if(correctProfessor.toString().equals("Dr. Bernstein")) {
+                    //clip = initClip(correctProfessor.getAudioNameIncorrect());
+                } else {
+                    //clip = initClip(correctProfessor.getGenericAudio());
+                }
             }
 
             TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
