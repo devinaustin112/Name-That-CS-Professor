@@ -9,13 +9,13 @@ package model;
  */
 public class Question
 {
-  int level;
+  String category;
   String questionText;
   Professor answer;
   
-  public Question(int level, String txt, Professor prof) 
+  public Question(String level, String txt, Professor prof) 
   {
-    this.level = level;
+    this.category = level;
     this.questionText = txt;
     this.answer = prof;
   }
@@ -27,7 +27,11 @@ public class Question
     return questionText;
   }
   
+  public void setCategory(String c) {
+    this.category = c;
+  }
+  
   public String toString() {
-    return questionText + ":" + level + ":" + answer;
+    return questionText + ":" + category + ":" + answer;
   }
 }
