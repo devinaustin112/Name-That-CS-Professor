@@ -330,7 +330,9 @@ public class NTCSP extends JApplication
             next.addActionListener(this);
             Content c;
 
-            if (correctProfessor.toString().equals("Dr. Bernstein"))
+            if (correctProfessor.toString().equals("Dr. Bernstein")
+                    || correctProfessor.toString().equals("Dr. Mayfield")
+                    || correctProfessor.toString().equals("Dr. Stewart"))
             {
                 if (chosen == correct)
                 {
