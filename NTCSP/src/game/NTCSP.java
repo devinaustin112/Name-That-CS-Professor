@@ -333,11 +333,15 @@ public class NTCSP extends JApplication
             // This if-else block will be removed after we have the audio files
             if (correctProfessor.toString().equals("Dr. Bernstein")
                     || correctProfessor.toString().equals("Dr. Mayfield")
-                    || correctProfessor.toString().equals("Dr. Stewart")) {
-                if (chosen == correct) {
+                    || correctProfessor.toString().equals("Dr. Stewart"))
+            {
+                if (chosen == correct)
+                {
                     //clip = initClip(correctProfessor.getAudioNameCorrect());
                     score++;
-                } else {
+                }
+                else
+                {
                     //clip = initClip(correctProfessor.getAudioNameIncorrect());
                 }
             }
