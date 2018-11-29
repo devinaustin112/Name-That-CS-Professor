@@ -1,3 +1,27 @@
+Bowers
+1 - I named my child after a Lord of   the Rings character
+1 - My interests lie in Compuational Geometry
+3 - I have lived in in Uganda
+Lam
+1 - My research lies in high-performance computing
+1 - I got my BS in Computer Science from JMU and I started as a professor in 2014
+1 - My favorite class to teach is CS 432 
+2 - I have a daughter named Lydia
+2 - My favorite food is pizza
+2 - My favorite local spot is El Charro
+3 - My go to catch phrase is: "Inconsistent indentation: tabs vs. spaces"
+3 - I was a deacon while I was in grad school
+Bernstein
+1 - I moved to Harrisonburg for my wife
+1 - I taught at MIT
+1 - I do not have any children
+1 - Next year is my 20th year anniversary at JMU
+2 - My first job was in a cermaics studio
+2 - My favorite class to teach is CS 159
+2 - My favorite local spot is Joshua Wilton House
+2 - My favorite food is french fries
+3 - I am from New York
+3 - I enjoy playing tennis in my free time
 Mayfield
 1 - My research is focused on databases and k-12 educational programs
 1 - I was an intern at Google
@@ -19,30 +43,6 @@ Stewart
 3 - I have worked as a file clerk and handyman in the past
 3 - I have a dog named Barfi
 3 - My go to catch phrase is: "Can i interest you in a research project?"
-Bernstein
-1 - I moved to Harrisonburg for my wife
-1 - I taught at MIT
-1 - I do not have any children
-1 - Next year is my 20th year anniversary at JMU
-2 - My first job was in a cermaics studio
-2 - My favorite class to teach is CS 159
-2 - My favorite local spot is Joshua Wilton House
-2 - My favorite food is french fries
-3 - I am from New York
-3 - I enjoy playing tennis in my free time
-Bowers
-1 - I named my child after a Lord of   the Rings character
-1 - My interests lie in Compuational Geometry
-3 - I have lived in in Uganda
-Lam
-1 - My research lies in high-performance computing
-1 - I got my BS in Computer Science from JMU and I started as a professor in 2014
-1 - My favorite class to teach is CS 432 
-2 - I have a daughter named Lydia
-2 - My favorite food is pizza
-2 - My favorite local spot is El Charro
-3 - My go to catch phrase is: "Inconsistent indentation: tabs vs. spaces"
-3 - I was a deacon while I was in grad school
 Weikle
 1 - My BS degree is in Electrical Engineering
 1 - I taught at Eastern Mennonite University

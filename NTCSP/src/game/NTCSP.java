@@ -330,23 +330,24 @@ public class NTCSP extends JApplication
             next.addActionListener(this);
             Content c;
 
+            // This if-else block will be removed after we have the audio files
             if (correctProfessor.toString().equals("Dr. Bernstein")
                     || correctProfessor.toString().equals("Dr. Mayfield")
-                    || correctProfessor.toString().equals("Dr. Stewart"))
-            {
-                if (chosen == correct)
-                {
-                    clip = initClip(correctProfessor.getAudioNameCorrect());
+                    || correctProfessor.toString().equals("Dr. Stewart")) {
+                if (chosen == correct) {
+                    //clip = initClip(correctProfessor.getAudioNameCorrect());
                     score++;
-                }
-                else
-                {
-                    clip = initClip(correctProfessor.getAudioNameIncorrect());
+                } else {
+                    //clip = initClip(correctProfessor.getAudioNameIncorrect());
                 }
             }
             else
             {
-                clip = initClip(correctProfessor.getGenericAudio());
+                if (chosen == correct)
+                {
+                    score++;
+                }
+                //clip = initClip(correctProfessor.getGenericAudio());
             }
 
             TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
@@ -364,15 +365,14 @@ public class NTCSP extends JApplication
             content.repaint();
             stage.start();
 
-            //clip = initClip(correctProfessor.getAudioName());
-            clip.start();
+            //clip.start();
 
             //hello
         }
 
         if (ac.equals("Next Question"))
         {
-            clip.stop();
+            //clip.stop();
             // Display question
             if (count % 5 == 0)
             {
