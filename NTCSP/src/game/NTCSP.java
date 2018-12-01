@@ -230,6 +230,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     playButton.setIcon(new ImageIcon(icon.getScaledInstance(512 / 4, 512 / 4, 1)));
 
     levelButtons.clear();
+
     levelButtons.add(educationButton);
     levelButtons.add(favoritesButton);
     levelButtons.add(storiesButton);
