@@ -229,6 +229,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     BufferedImage icon = imageFactory.createBufferedImage("ic.png", 4);
     playButton.setIcon(new ImageIcon(icon.getScaledInstance(512 / 4, 512 / 4, 1)));
 
+    levelButtons.clear();
     levelButtons.add(educationButton);
     levelButtons.add(favoritesButton);
     levelButtons.add(storiesButton);
@@ -272,6 +273,8 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     v.getView().setBounds(0, 0, 1000, 550);
     content.add(v.getView());
 
+    content.revalidate();
+    content.repaint();
   }
 
   @Override
