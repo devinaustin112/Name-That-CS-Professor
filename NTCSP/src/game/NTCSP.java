@@ -5,12 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import model.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -18,10 +20,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import app.*;
 import event.Metronome;
@@ -56,6 +56,9 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   HashMap<Integer, String[]> answers;
   HashMap<Visualization, Professor> answerToProfessor;
   HashMap<String, ArrayList<Question>> categoryToQuestions;
+  ArrayList<Question> questionSet;
+  ArrayList<JButton> levelButtons = new ArrayList<>();
+  String selectedCategory;
   VisualizationView chosen, correct;
 
   ArrayList<Question> educationQs, favoriteQs, storiesQs, phrasesQs, familyQs, freetimeQs, bonusQs;
@@ -93,7 +96,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     String l;
     Question q;
 
-    is = rf.findInputStream("Ques");
+    is = rf.findInputStream("Quest.txt");
     in = new BufferedReader(new InputStreamReader(is));
 
     try
@@ -104,16 +107,14 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
         if (Character.isDigit(line.charAt(0)))
         {
-      //    String[] temp = line.split("\\|");
+          //    String[] temp = line.split("\\|");
           prof = new Professor(line.substring(2, line.length()));
           professors.add(prof);
           continue;
         }
 
         l = line.substring(0, 2);
-      //  System.out.println(l);
         qu = line.substring(line.indexOf('-') + 2, line.length());
-     //   System.out.println(qu);
         q = new Question(l, qu, prof);
 
         switch (l)
@@ -143,17 +144,19 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
             System.out.println("Not an accurate level: " + line);
         }
       }
+
+      categoryToQuestions.put("EDUCATION / WORK", educationQs);
+      categoryToQuestions.put("FAVORITE THINGS", favoriteQs);
+      categoryToQuestions.put("INTERESTING STORIES", storiesQs);
+      categoryToQuestions.put("CHILDREN / PETS", familyQs);
+      categoryToQuestions.put("CATCH PHRASES / QUOTES", phrasesQs);
+      categoryToQuestions.put("LIFE OUTSIDE WORK", freetimeQs);
+
     } catch (IOException e)
     {
       e.printStackTrace();
     }
 
-    // testing
-    //	    System.out.println(professors);
-    //	   System.out.println(bonusQs);
-    //	    System.out.println(educationQs);
-    //	    System.out.println(level3Qs);
-    //	     System.out.println(level3Qs.size() + level2Qs.size() + level1Qs.size());
   }
 
   public void init()
@@ -209,9 +212,65 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
   public void chooseCategoriesScreen()
   {
-    
-    
-    
+    JPanel content = (JPanel) getContentPane();
+    content.setBackground(Color.WHITE);
+    content.removeAll();
+
+    JButton educationButton = new JButton("Education / Work".toUpperCase());
+    JButton favoritesButton = new JButton("Favorite things".toUpperCase());
+    JButton storiesButton = new JButton("Interesting stories".toUpperCase());
+    JButton familyButton = new JButton("Children / Pets".toUpperCase());
+    JButton phrasesButton = new JButton("Catch Phrases / Quotes".toUpperCase());
+    JButton freetimeButton = new JButton("Life outside work".toUpperCase());
+
+    //play button
+    JButton playButton = new JButton("Play!".toUpperCase());
+    ImageFactory imageFactory = new ImageFactory(rf);
+    BufferedImage icon = imageFactory.createBufferedImage("ic.png", 4);
+    playButton.setIcon(new ImageIcon(icon.getScaledInstance(512 / 4, 512 / 4, 1)));
+
+    levelButtons.add(educationButton);
+    levelButtons.add(favoritesButton);
+    levelButtons.add(storiesButton);
+    levelButtons.add(familyButton);
+    levelButtons.add(phrasesButton);
+    levelButtons.add(freetimeButton);
+
+    int y = 0;
+    for (JButton button : levelButtons)
+    {
+      button.setFont(new Font("Oswald", Font.BOLD, 15));
+      button.setBackground(new Color(105, 0, 250));
+      button.setForeground(Color.white);
+      button.setUI(new StyledButtonUI());
+      button.setBounds(20, 300 + y, 400, 60);
+      button.addActionListener(this);
+      y += 70;
+      content.add(button);
+    }
+
+    //default
+    educationButton.setBackground(new Color(69, 0, 132));
+    selectedCategory = educationButton.getLabel();
+
+    BufferedImage edImage = imageFactory.createBufferedImage("education.jpg", 4);
+    JLabel levelPic = new JLabel(new ImageIcon(edImage));
+    levelPic.setBounds(530, 300, 400, 400);
+    content.add(levelPic);
+
+    playButton.setFont(new Font("Impact", Font.BOLD, 50));
+    playButton.setBackground(new Color(69, 0, 132));//223,210,170));
+    playButton.setForeground(new Color(223, 210, 170));//Color.WHITE);
+    playButton.setUI(new StyledButtonUI());
+    playButton.setBounds(590, 730, 290, 60);
+    playButton.addActionListener(this);
+    content.add(playButton);
+
+    Visualization v = new Visualization();
+    Content home = cf.createContent("chooseCat.png");
+    v.add(home);
+    v.getView().setBounds(0, 0, 1000, 550);
+    content.add(v.getView());
 
   }
 
@@ -237,7 +296,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     nameArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
     nameArea.setHorizontalAlignment(JTextField.CENTER);
     nameArea.setEditable(false);
-    nameArea.setText(username + "'s Score");
+    nameArea.setText(username + "'s Score.");
     nameArea.setBounds(0, 0, 1000, 100);
 
     JTextField scoreArea = new JTextField();
@@ -254,10 +313,27 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     content.add(nameArea);
     content.add(vis.getView());
 
-    JButton playAgainButton = new JButton("Play Again");
-    playAgainButton.setBounds(0, 750, 1000, 50);
+    JPanel panel = new JPanel();
+    panel.setBackground(new Color(105, 0, 250));
+    panel.setBounds(0, 750, 1000, 50);
+
+    JButton playAgainButton = new JButton("Play Again - Same Category");
+    playAgainButton.setFont(new Font("Oswald", Font.BOLD, 15));
+    playAgainButton.setBounds(0, 750, 500, 100);
+    playAgainButton.setBackground(Color.YELLOW);
     playAgainButton.addActionListener(this);
-    content.add(playAgainButton);
+    playAgainButton.setUI(new StyledButtonUI());
+    panel.add(playAgainButton);
+
+    JButton levelsButton = new JButton("Play Again - Different Category");
+    levelsButton.setFont(new Font("Oswald", Font.BOLD, 15));
+    levelsButton.setBounds(500, 750, 520, 100);
+    levelsButton.setBackground(Color.YELLOW);
+    levelsButton.setUI(new StyledButtonUI());
+    levelsButton.addActionListener(this);
+    panel.add(levelsButton);
+
+    content.add(panel);
   }
 
   public Clip initClip(String file)
@@ -303,7 +379,32 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   {
     JPanel content = (JPanel) getContentPane();
     String ac = arg0.getActionCommand();
-    if (ac.equals("Start") || ac.equals("Play Again"))
+
+    if (ac.equals("Start") || ac.equals("Play Again - Different Category"))
+    {
+      chooseCategoriesScreen();
+    }
+    
+    else if (categoryToQuestions.keySet().contains(ac)) //choosing a category
+    {
+      selectedCategory = ac;
+      for (int i = 0; i < levelButtons.size(); i++)
+      {
+        if (levelButtons.get(i).getLabel().equals(ac))
+        {
+
+          for (JButton other : levelButtons)
+          {
+            other.setBackground(new Color(105, 0, 250));
+          }
+          levelButtons.get(i).setBackground(new Color(69, 0, 132));
+          break;
+        }
+      }
+    }
+
+    else if (ac.equals("PLAY!") || ac.equals("Play Again")
+        || ac.equals("Play Again - Same Category"))
     {
       // Store username
       username = usernameField.getText();
@@ -328,9 +429,11 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       question.setForeground(new Color(0, 0, 0));
       question.setEditable(false);
 
-      int randQ = (int) (rand.nextDouble() * bonusQs.size());
-      Question q = bonusQs.get(randQ);
-      bonusQs.remove(randQ);
+      questionSet = categoryToQuestions.get(selectedCategory);
+
+      int randQ = (int) (rand.nextDouble() * questionSet.size());
+      Question q = questionSet.get(randQ);
+      questionSet.remove(randQ);
 
       correctProfessor = q.getAnswer();
       question.setFont(new Font("Times New Roman", Font.BOLD, 40));
@@ -346,8 +449,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       content.revalidate();
       content.repaint();
       met.stop();
-    }
-    if (ac.equals("Submit Choice"))
+    } else if (ac.equals("Submit Choice"))
     {
       questionsAsked++;
       content.removeAll();
@@ -398,7 +500,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       //hello
     }
 
-    if (ac.equals("Next Question"))
+    else if (ac.equals("Next Question"))
     {
       //clip.stop();
       // Display question
@@ -428,11 +530,11 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
         question.setForeground(new Color(0, 0, 0));
         question.setEditable(false);
 
-        int randQ = (int) (rand.nextDouble() * bonusQs.size());
-        Question q = bonusQs.get(randQ);
-        bonusQs.remove(randQ);
+        int randQ = (int) (rand.nextDouble() * questionSet.size());
+        Question q = questionSet.get(randQ);
+        questionSet.remove(randQ);
 
-        question.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        question.setFont(new Font("Times New Roman", Font.BOLD, 35));
         question.setText(q.getText());
         correctProfessor = q.getAnswer();
         question.setLineWrap(true);
@@ -510,7 +612,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     for (int i = 0; i < 4; i++)
     {
       // Get random between 0 and 10 non repeating
-      int index = (int) (rand.nextDouble() * 8);
+      int index = (int) (rand.nextDouble() * 8); //8 not 10
       while (previous.contains(index))
       {
         index = (index + 1) % 8;
@@ -520,7 +622,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       // If random index is greater than or equal to 5 and not added
       // add the correct answer to vis. Otherwise add other choices
 
-      // Code duplication
+      // Code duplication - yea
       Content prof;
       if (index >= 5 && notAdded || i == 3 && notAdded)
       {
