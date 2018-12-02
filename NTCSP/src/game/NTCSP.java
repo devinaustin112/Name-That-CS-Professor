@@ -391,9 +391,9 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
     if (ac.equals("Choose Category") || ac.equals("Play Again - Different Category"))
     {
-      chooseCategoriesScreen();
+        chooseCategoriesScreen();
     }
-    
+
     else if (categoryToQuestions.keySet().contains(ac)) //choosing a category
     {
       selectedCategory = ac;
@@ -415,100 +415,10 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     else if (ac.equals("PLAY!") || ac.equals("Play Again")
         || ac.equals("Play Again - Same Category"))
     {
-      // Store username
-      username = usernameField.getText();
-
-      //Reset score
-      score = 0;
-
-      content.removeAll();
-      JButton submit = new JButton("Submit Choice");
-      submit.setBounds(0, 750, 1000, 50);
-      submit.addActionListener(this);
-      content.add(submit);
-
-      Content qContent = cf.createContent("question.png");
-
-      vis = new Visualization();
-      vis.add(qContent);
-      vis.getView().setBounds(0, 0, 1000, 300);
-
-      question = new JTextArea();
-      question.setBackground(new Color(105, 0, 250));
-      question.setForeground(new Color(0, 0, 0));
-      question.setEditable(false);
-
-      questionSet = categoryToQuestions.get(selectedCategory);
-
-      int randQ = (int) (rand.nextDouble() * questionSet.size());
-      Question q = questionSet.get(randQ);
-      questionSet.remove(randQ);
-
-      correctProfessor = q.getAnswer();
-      question.setFont(new Font("Times New Roman", Font.BOLD, 40));
-      question.setText(q.getText());
-      question.setLineWrap(true);
-      question.setBounds(350, 100, 600, 200);
-      question.setOpaque(false);
-
-      addProfessors(q);
-
-      content.add(question);
-      content.add(vis.getView());
-      content.revalidate();
-      content.repaint();
-      met.stop();
+        startGame();
     } else if (ac.equals("Submit Choice"))
     {
-      questionsAsked++;
-      content.removeAll();
-      JButton next = new JButton("Next Question");
-      next.setBounds(0, 750, 1000, 50);
-      next.addActionListener(this);
-      Content c;
-
-      // This if-else block will be removed after we have the audio files
-      if (correctProfessor.toString().equals("Dr. Bernstein")
-          || correctProfessor.toString().equals("Dr. Mayfield")
-          || correctProfessor.toString().equals("Dr. Stewart"))
-      {
-        if (chosen == correct)
-        {
-          //clip = initClip(correctProfessor.getAudioNameCorrect());
-          score++;
-        } else
-        {
-          //clip = initClip(correctProfessor.getAudioNameIncorrect());
-        }
-      } else
-      {
-        if (chosen == correct)
-        {
-          score++;
-        }
-        //clip = initClip(correctProfessor.getGenericAudio());
-      }
-
-      TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
-
-      stage = new Stage(65);
-      stage.getView().setBounds(0, 550, 200, 200);
-      stage.add(cf.createContent(correctProfessor.getHeadImageName()));
-      stage.add(tp);
-
-      avatar.setLocation(700, 350);
-      content.add(avatar);
-      content.setBackground(Color.white);
-      content.add(stage.getView());
-      content.add(vis.getView());
-      content.add(next);
-      content.revalidate();
-      content.repaint();
-      stage.start();
-
-      //clip.start();
-
-      //hello
+        resultScreen();
     }
 
     else if (ac.equals("Next Question"))
@@ -716,5 +626,109 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       }
     }
     previous.clear();
+  }
+
+  public void startGame()
+  {
+      JPanel content = (JPanel) getContentPane();
+
+      // Store username
+      username = usernameField.getText();
+
+      //Reset score
+      score = 0;
+
+      content.removeAll();
+      JButton submit = new JButton("Submit Choice");
+      submit.setBounds(0, 750, 1000, 50);
+      submit.addActionListener(this);
+      content.add(submit);
+
+      Content qContent = cf.createContent("question.png");
+
+      vis = new Visualization();
+      vis.add(qContent);
+      vis.getView().setBounds(0, 0, 1000, 300);
+
+      question = new JTextArea();
+      question.setBackground(new Color(105, 0, 250));
+      question.setForeground(new Color(0, 0, 0));
+      question.setEditable(false);
+
+      questionSet = categoryToQuestions.get(selectedCategory);
+
+      int randQ = (int) (rand.nextDouble() * questionSet.size());
+      Question q = questionSet.get(randQ);
+      questionSet.remove(randQ);
+
+      correctProfessor = q.getAnswer();
+      question.setFont(new Font("Times New Roman", Font.BOLD, 40));
+      question.setText(q.getText());
+      question.setLineWrap(true);
+      question.setBounds(350, 100, 600, 200);
+      question.setOpaque(false);
+
+      addProfessors(q);
+
+      content.add(question);
+      content.add(vis.getView());
+      content.revalidate();
+      content.repaint();
+      met.stop();
+  }
+
+  public void resultScreen()
+  {
+      JPanel content = (JPanel) getContentPane();
+
+      questionsAsked++;
+      content.removeAll();
+      JButton next = new JButton("Next Question");
+      next.setBounds(0, 750, 1000, 50);
+      next.addActionListener(this);
+      Content c;
+
+      // This if-else block will be removed after we have the audio files
+      if (correctProfessor.toString().equals("Dr. Bernstein")
+              || correctProfessor.toString().equals("Dr. Mayfield")
+              || correctProfessor.toString().equals("Dr. Stewart"))
+      {
+          if (chosen == correct)
+          {
+              //clip = initClip(correctProfessor.getAudioNameCorrect());
+              score++;
+          } else
+          {
+              //clip = initClip(correctProfessor.getAudioNameIncorrect());
+          }
+      } else
+      {
+          if (chosen == correct)
+          {
+              score++;
+          }
+          //clip = initClip(correctProfessor.getGenericAudio());
+      }
+
+      TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
+
+      stage = new Stage(65);
+      stage.getView().setBounds(0, 550, 200, 200);
+      stage.add(cf.createContent(correctProfessor.getHeadImageName()));
+      stage.add(tp);
+
+      avatar.setLocation(700, 350);
+      content.add(avatar);
+      content.setBackground(Color.white);
+      content.add(stage.getView());
+      content.add(vis.getView());
+      content.add(next);
+      content.revalidate();
+      content.repaint();
+      stage.start();
+
+      //clip.start();
+
+      //hello
   }
 }
