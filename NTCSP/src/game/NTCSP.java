@@ -45,6 +45,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   Visualization vis;
   Stage stage;
   LinkedList<Visualization> profList;
+  LinkedList<VisualizationView> avatars;
   ResourceFinder rf;
   ContentFactory cf;
   ImageFactory ifa;
@@ -59,7 +60,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   ArrayList<Question> questionSet;
   ArrayList<JButton> levelButtons = new ArrayList<>();
   String selectedCategory;
-  VisualizationView chosen, correct;
+  VisualizationView chosen, correct, avatar;
 
   ArrayList<Question> educationQs, favoriteQs, storiesQs, phrasesQs, familyQs, freetimeQs, bonusQs;
   ArrayList<Professor> professors; // don't know if we actually need this but
@@ -384,7 +385,11 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     JPanel content = (JPanel) getContentPane();
     String ac = arg0.getActionCommand();
 
-    if (ac.equals("Start") || ac.equals("Play Again - Different Category"))
+    if (ac.equals("Start")) {
+        addAvatars();
+    }
+
+    if (ac.equals("Choose Category") || ac.equals("Play Again - Different Category"))
     {
       chooseCategoriesScreen();
     }
@@ -491,6 +496,8 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       stage.add(cf.createContent(correctProfessor.getHeadImageName()));
       stage.add(tp);
 
+      avatar.setLocation(700, 350);
+      content.add(avatar);
       content.setBackground(Color.white);
       content.add(stage.getView());
       content.add(vis.getView());
@@ -559,13 +566,25 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   @Override
   public void mouseClicked(MouseEvent arg0)
   {
-    for (int i = 0; i < profList.size(); i++)
-    {
-      profList.get(i).setBackground(new JPanel().getBackground());
+    if(profList != null) {
+        for (int i = 0; i < profList.size(); i++) {
+            profList.get(i).setBackground(new JPanel().getBackground());
+        }
     }
 
-    chosen = (VisualizationView) arg0.getSource();
-    chosen.setBackground(new Color(104, 23, 250));
+    for (int i = 0; i < avatars.size(); i++) {
+        avatars.get(i).setBackground(Color.white);
+    }
+
+
+    if(avatars.contains(arg0.getSource())) {
+        avatar = (VisualizationView) arg0.getSource();
+        avatar.setBackground(new Color(104, 23, 250));
+    } else {
+        chosen = (VisualizationView) arg0.getSource();
+        chosen.setBackground(new Color(104, 23, 250));
+    }
+
   }
 
   @Override
@@ -590,6 +609,48 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   public void mouseReleased(MouseEvent arg0)
   {
     // TODO Auto-generated method stub
+  }
+
+  public void addAvatars()
+  {
+      JPanel content = (JPanel) getContentPane();
+
+      avatars = new LinkedList<>();
+      String[] pics = new String[4];
+      pics[0] = "Pres.png";
+      pics[1] = "David.png";
+      pics[2] = "Bryan.png";
+
+      content.removeAll();
+      content.setBackground(Color.white);
+      Content c = cf.createContent("question.png");
+      c.setLocation(0, 0);
+      Visualization vis = new Visualization();
+      vis.add(c);
+      vis.getView().setBounds(0, 0, 1000, 300);
+      content.add(vis.getView());
+
+      int x = 0;
+      for(int i = 0; i < 3; i++) {
+          c = cf.createContent(pics[i]);
+          c.setLocation(52, 50);
+          vis = new Visualization();
+          vis.add(c);
+          vis.getView().setBounds(x, 300, 334, 400);
+          vis.addMouseListener(this);
+          avatars.add(vis.getView());
+          content.add(vis.getView());
+          x = x + 333;
+      }
+      avatar = vis.getView();
+
+      JButton start = new JButton("Choose Category");
+      start.setBounds(0, 750, 1000, 50);
+      start.addActionListener(this);
+      content.add(start);
+
+      content.revalidate();
+      content.repaint();
   }
 
   public void addProfessors(Question q)
