@@ -476,6 +476,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
         addProfessors(q);
 
+        content.setBackground(Color.white);
         content.add(question);
         content.add(vis.getView());
         content.revalidate();
@@ -489,22 +490,22 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   public void mouseClicked(MouseEvent arg0)
   {
     if(profList != null) {
-        for (int i = 0; i < profList.size(); i++) {
-            profList.get(i).setBackground(new JPanel().getBackground());
-        }
+      for (int i = 0; i < profList.size(); i++) {
+        profList.get(i).setBackground(Color.white);
+      }
     }
 
     for (int i = 0; i < avatars.size(); i++) {
-        avatars.get(i).setBackground(Color.white);
+      avatars.get(i).setBackground(new Color(104, 23, 250));
     }
 
 
     if(avatars.contains(arg0.getSource())) {
-        avatar = (VisualizationView) arg0.getSource();
-        avatar.setBackground(new Color(104, 23, 250));
+      avatar = (VisualizationView) arg0.getSource();
+      avatar.setBackground(new Color(223, 210, 170));
     } else {
-        chosen = (VisualizationView) arg0.getSource();
-        chosen.setBackground(new Color(104, 23, 250));
+      chosen = (VisualizationView) arg0.getSource();
+      chosen.setBackground(new Color(104, 23, 250));
     }
 
   }
@@ -535,44 +536,55 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
   public void addAvatars()
   {
-      JPanel content = (JPanel) getContentPane();
+    JPanel content = (JPanel) getContentPane();
 
-      avatars = new LinkedList<>();
-      String[] pics = new String[4];
-      pics[0] = "Pres.png";
-      pics[1] = "David.png";
-      pics[2] = "Bryan.png";
+    avatars = new LinkedList<>();
+    String[] pics = new String[4];
+    pics[0] = "Pres.png";
+    pics[1] = "David.png";
+    pics[2] = "Bryan.png";
 
-      content.removeAll();
-      content.setBackground(Color.white);
-      Content c = cf.createContent("question.png");
-      c.setLocation(0, 0);
-      Visualization vis = new Visualization();
-      vis.add(c);
-      vis.getView().setBounds(0, 0, 1000, 300);
+    content.removeAll();
+    content.setBackground(Color.white);
+
+    Content avatarScreen = cf.createContent("Avatar.png");
+    avatarScreen.setLocation(0, 0);
+    Content names = cf.createContent("Names.png");
+    names.setLocation(0, 0);
+
+    Visualization vis = new Visualization();
+    vis.getView().setBounds(0, 0, 1000, 300);
+    vis.add(avatarScreen);
+
+    Visualization vis1 = new Visualization();
+    vis1.getView().setBounds(0, 700, 1000, 50);
+    vis1.add(names);
+
+    content.add(vis.getView());
+    content.add(vis1.getView());
+
+    int x = 0;
+    for(int i = 0; i < 3; i++) {
+      Content avatr = cf.createContent(pics[i]);
+      avatr.setLocation(0, 0);
+      vis = new Visualization();
+      vis.add(avatr);
+      vis.getView().setBounds(x, 300, 334, 400);
+      vis.addMouseListener(this);
+      vis.setBackground(new Color(104, 23, 250));
+      avatars.add(vis.getView());
       content.add(vis.getView());
+      x = x + 333;
+    }
+    avatar = vis.getView();
 
-      int x = 0;
-      for(int i = 0; i < 3; i++) {
-          c = cf.createContent(pics[i]);
-          c.setLocation(52, 50);
-          vis = new Visualization();
-          vis.add(c);
-          vis.getView().setBounds(x, 300, 334, 400);
-          vis.addMouseListener(this);
-          avatars.add(vis.getView());
-          content.add(vis.getView());
-          x = x + 333;
-      }
-      avatar = vis.getView();
+    JButton start = new JButton("Choose Category");
+    start.setBounds(0, 750, 1000, 50);
+    start.addActionListener(this);
+    content.add(start);
 
-      JButton start = new JButton("Choose Category");
-      start.setBounds(0, 750, 1000, 50);
-      start.addActionListener(this);
-      content.add(start);
-
-      content.revalidate();
-      content.repaint();
+    content.revalidate();
+    content.repaint();
   }
 
   public void addProfessors(Question q)
@@ -615,6 +627,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       {
         prof = cf.createContent(q.getAnswer().getImage());
         answer = new Visualization();
+        answer.setBackground(Color.white);
         answer.addMouseListener(this);
         prof.setLocation(25, 0);
         answer.add(prof);
@@ -628,6 +641,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       {
         prof = cf.createContent(otherChoices.get(index).getImage());
         answer = new Visualization();
+        answer.setBackground(Color.white);
         answer.addMouseListener(this);
         prof.setLocation(25, 0);
         answer.add(prof);
@@ -682,6 +696,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
       addProfessors(q);
 
+      content.setBackground(Color.white);
       content.add(question);
       content.add(vis.getView());
       content.revalidate();
@@ -717,12 +732,13 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       stage.add(cf.createContent(correctProfessor.getHeadImageName()));
       stage.add(tp);
 
-      avatar.setLocation(700, 350);
-      content.add(avatar);
+      avatar.setLocation(700, 450);
       content.setBackground(Color.white);
       content.add(stage.getView());
       content.add(vis.getView());
       content.add(next);
+      content.setBackground(new Color(104, 23, 250));
+      content.add(avatar);
       content.revalidate();
       content.repaint();
       stage.start();
