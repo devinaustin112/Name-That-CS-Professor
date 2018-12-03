@@ -22,7 +22,6 @@ public class Question
 
   public Professor getAnswer() { return answer; }
 
-  
   public String getText() {
     return questionText;
   }

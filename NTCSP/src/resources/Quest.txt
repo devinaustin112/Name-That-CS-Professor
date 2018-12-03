@@ -40,10 +40,10 @@ EW - I have a Bachelor of Arts in German
 EW - My first job was mowing and watering lawns
 FT - My favorite class to teach is CS 149
 FT - My favorite holiday is Christmas
-FT - My favorite local spot is Bruster's El Charro
+FT - My favorite local spot is Bruster's
 FT - My favorite food is mashed potatoes and gravy
 IP - I have typeset a custom edition of the Book of Mormon.
-CP - "Don’t destroy your own integrity for a few points by cheating"
+CP - "Don't destroy your own integrity for a few points by cheating"
 FP - I have 4 children, 3 girls and one boy
 LW - I spend my free time going places with my family
 5 Stewart
@@ -58,10 +58,10 @@ FP - I have a dog named Barfi
 LW - I enjoy playing overcooked, little big planet and mario kart
 6 Weikle
 EW - My BS degree is in Electrical Engineering
+EW - I have taught at Eastern Mennonite University across town from JMU
 BO - I am from the midwest
+IP - I have been crowned rodeo royalty
 7 Norton
-BO - I teach in 2 departments
 8 Kirkpatrick
-BO - I minored in Religion during my undergrad
 9 Fox
-BO - I have a B.A in Philosophy and English
+10 Aboutabl

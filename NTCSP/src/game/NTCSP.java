@@ -190,15 +190,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     content.add(stage.getView());
     content.add(vis.getView());
 
-    // Create user name label
-    JLabel usernameLabel = new JLabel("Enter User Name:", JLabel.CENTER);
-    usernameLabel.setBounds(0, 750, 150, 50);
-    content.add(usernameLabel);
-
-    // Create user name entry
-    usernameField = new JTextField();
-    usernameField.setBounds(150, 750, 350, 50);
-    content.add(usernameField);
+    setupUsername();
 
     // Create start button
     JButton start = new JButton("Start");
@@ -209,6 +201,26 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     // Load questions from file
     loadQuestions();
     stage.start();
+  }
+
+  private void setupUsername()
+  {
+    JPanel content = (JPanel) getContentPane();
+
+    // Create user name label
+    JLabel usernameLabel = new JLabel("Enter User Name:", JLabel.CENTER);
+    usernameLabel.setBounds(0, 750, 150, 50);
+    content.add(usernameLabel);
+
+    // Create user name entry
+    usernameField = new JTextField();
+    usernameField.setBounds(150, 750, 350, 50);
+    content.add(usernameField);
+  }
+
+  private void startScreen()
+  {
+
   }
 
   public void chooseCategoriesScreen()
@@ -423,7 +435,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
     else if (ac.equals("Next Question"))
     {
-      //clip.stop();
+//      clip.stop();
       // Display question
       if (questionsAsked % 5 == 0)
       {
@@ -688,26 +700,14 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       next.addActionListener(this);
       Content c;
 
-      // This if-else block will be removed after we have the audio files
-      if (correctProfessor.toString().equals("Dr. Bernstein")
-              || correctProfessor.toString().equals("Dr. Mayfield")
-              || correctProfessor.toString().equals("Dr. Stewart"))
+      if (chosen == correct)
       {
-          if (chosen == correct)
-          {
-              //clip = initClip(correctProfessor.getAudioNameCorrect());
-              score++;
-          } else
-          {
-              //clip = initClip(correctProfessor.getAudioNameIncorrect());
-          }
-      } else
+//        clip = initClip(correctProfessor.getAudioNameCorrect());
+        score++;
+      }
+      else
       {
-          if (chosen == correct)
-          {
-              score++;
-          }
-          //clip = initClip(correctProfessor.getGenericAudio());
+//        clip = initClip(correctProfessor.getAudioNameIncorrect());
       }
 
       TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
@@ -727,8 +727,6 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
       content.repaint();
       stage.start();
 
-      //clip.start();
-
-      //hello
+//      clip.start();
   }
 }
