@@ -2,13 +2,18 @@ package model;
 
 import javax.swing.JPanel;
 
-public abstract class Score
+public class Score
 {
     protected int score;
 
     public Score()
     {
         this.score = 0;
+    }
+
+    public Score(int score)
+    {
+        this.score = score;
     }
 
     public int getScore()
@@ -21,5 +26,13 @@ public abstract class Score
         score += change;
     }
 
-    public abstract void displayScore(JPanel contentPane);
+    public void reset()
+    {
+        score = 0;
+    }
+
+    public void displayScore(JPanel contentPane)
+    {
+        // Default display
+    }
 }
