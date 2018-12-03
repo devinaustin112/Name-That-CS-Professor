@@ -6,6 +6,14 @@ import visual.statik.TransformableContent;
 import visual.statik.sampled.Content;
 import visual.statik.sampled.ContentFactory;
 
+/**
+ * Encapsulates a professor "talking" by having their mouth move up and down.
+ *
+ * @author Christy Kobert, Chris Williams, Devin Dyer, Nkeng Atabong
+ * @version 1.0 - December 3, 2018
+ *
+ * This work complies with the JMU Honor Code.
+ */
 public class TalkingProfessor extends AbstractSprite {
     double x, y, origin;
     Content content;

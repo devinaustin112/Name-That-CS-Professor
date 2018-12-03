@@ -11,6 +11,14 @@ import javax.swing.plaf.basic.BasicButtonUI;
 
 import java.awt.Graphics;
 
+/**
+ * Creates a styled button.
+ *
+ * @author Christy Kobert, Chris Williams, Devin Dyer, Nkeng Atabong
+ * @version 1.0 - December 3, 2018
+ *
+ * This work complies with the JMU Honor Code.
+ */
 public class StyledButtonUI extends BasicButtonUI {
 
   @Override
