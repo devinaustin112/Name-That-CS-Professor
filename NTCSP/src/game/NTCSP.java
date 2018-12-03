@@ -29,6 +29,14 @@ import visual.statik.sampled.Content;
 import visual.statik.sampled.ContentFactory;
 import visual.statik.sampled.ImageFactory;
 
+/**
+ * Encapsulates the game "Name That CS Professor".
+ *
+ * @author Christy Kobert, Chris Williams, Devin Dyer, Nkeng Atabong
+ * @version 1.0 - December 3, 2018
+ *
+ * This work complies with the JMU Honor Code.
+ */
 public class NTCSP extends JApplication implements ActionListener, MouseListener
 {
   // Category types
