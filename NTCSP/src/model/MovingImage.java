@@ -1,4 +1,4 @@
-package game;
+package model;
 
 import visual.dynamic.described.AbstractSprite;
 import visual.statik.TransformableContent;
@@ -7,7 +7,7 @@ public class MovingImage extends AbstractSprite{
     private double maxX, maxY, x, y, origin;
     private visual.statik.sampled.Content content;
 
-    MovingImage(visual.statik.sampled.Content content, double x, double y) {
+    public MovingImage(visual.statik.sampled.Content content, double x, double y) {
         super();
         this.content = content;
         this.x = x;
