@@ -346,39 +346,37 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
   public Clip initClip(String file)
   {
     Clip clip;
-    try
-    {
-      AudioInputStream stream;
-      BufferedInputStream bis;
-      InputStream is;
-      ResourceFinder finder;
+      try {
+        AudioInputStream stream;
+        BufferedInputStream bis;
+        InputStream is;
+        ResourceFinder finder;
 
-      // Get the resource
-      finder = ResourceFinder.createInstance(resources.Marker.class);
-      is = finder.findInputStream(file);
+        // Get the resource
+        finder = ResourceFinder.createInstance(resources.Marker.class);
+        is = finder.findInputStream(file);
 
-      // Decorate the InputStream as a BufferedInputStream
-      // so mark and reset are supported
-      bis = new BufferedInputStream(is);
+        // Decorate the InputStream as a BufferedInputStream
+        // so mark and reset are supported
+        bis = new BufferedInputStream(is);
 
-      // Create an AudioInputStream from the InputStream
-      stream = AudioSystem.getAudioInputStream(bis);
+        // Create an AudioInputStream from the InputStream
+        stream = AudioSystem.getAudioInputStream(bis);
 
-      // Create a Clip (i.e., a Line that can be pre-loaded)
-      clip = AudioSystem.getClip();
+        // Create a Clip (i.e., a Line that can be pre-loaded)
+        clip = AudioSystem.getClip();
 
-      // Tell the Clip to acquire any required system
-      // resources and become operational
-      clip.open(stream);
+        // Tell the Clip to acquire any required system
+        // resources and become operational
+        clip.open(stream);
 
-      clip.loop(Clip.LOOP_CONTINUOUSLY);
-    } catch (Exception e)
-    {
-      e.printStackTrace();
-      clip = null;
-    }
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+      } catch (Exception e) {
+        e.printStackTrace();
+        clip = null;
+      }
 
-    return clip;
+      return clip;
   }
 
   public void addAvatars()
@@ -505,7 +503,7 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
   public void startGame()
   {
     JPanel content = (JPanel) getContentPane();
-      // Store username
+    // Store username
     username = usernameField.getText();
 
     //Reset score
@@ -579,7 +577,7 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
       c = cf.createContent("Correct.png");
       c.setLocation(0, 0);
       vis1.add(c);
-//       clip = initClip(correctProfessor.getAudioNameCorrect());
+      clip = initClip(correctProfessor.getAudioNameCorrect());
       score++;
     }
     else
@@ -587,7 +585,7 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
       c = cf.createContent("Incorrect.png");
       c.setLocation(0, 0);
       vis1.add(c);
-//        clip = initClip(correctProfessor.getAudioNameIncorrect());
+      clip = initClip(correctProfessor.getAudioNameIncorrect());
     }
 
     TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
@@ -608,8 +606,8 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
     content.revalidate();
     content.repaint();
     stage.start();
+    clip.start();
 
-//      clip.start();
   }
 
   @Override
@@ -656,7 +654,7 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
 
     else if (ac.equals("Next Question"))
     {
-//      clip.stop();
+      clip.stop();
       // Display question
       if (questionsAsked % 5 == 0)
       {
