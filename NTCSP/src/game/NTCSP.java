@@ -51,7 +51,6 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
   HashMap<Integer, String[]> answers;
   HashMap<Visualization, Professor> answerToProfessor;
   HashMap<String, ArrayList<Question>> categoryToQuestions;
-  ArrayList<Question> questionSet;
   ArrayList<JButton> levelButtons = new ArrayList<>();
   String selectedCategory;
   VisualizationView chosen, correct, avatar;
@@ -530,11 +529,13 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
     question.setForeground(new Color(0, 0, 0));
     question.setEditable(false);
 
-    questionSet = categoryToQuestions.get(selectedCategory);
+    if(categoryToQuestions.get(selectedCategory).size() <= 0) {
+      loadQuestions();
+    }
 
-    int randQ = (int) (rand.nextDouble() * questionSet.size());
-    Question q = questionSet.get(randQ);
-    questionSet.remove(randQ);
+    int randQ = (int) (rand.nextDouble() * categoryToQuestions.get(selectedCategory).size());
+    Question q = categoryToQuestions.get(selectedCategory).get(randQ);
+    categoryToQuestions.get(selectedCategory).remove(randQ);
 
     correctProfessor = q.getAnswer();
     question.setFont(new Font("Impact", Font.PLAIN, 40));
@@ -663,7 +664,6 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
         content.revalidate();
         content.repaint();
         displayScore();
-        loadQuestions();
       } else
       {
         content.removeAll();
@@ -686,9 +686,13 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
         question.setForeground(new Color(0, 0, 0));
         question.setEditable(false);
 
-        int randQ = (int) (rand.nextDouble() * questionSet.size());
-        Question q = questionSet.get(randQ);
-        questionSet.remove(randQ);
+        if(categoryToQuestions.get(selectedCategory).size() <= 0){
+          loadQuestions();
+        }
+
+        int randQ = (int) (rand.nextDouble() * categoryToQuestions.get(selectedCategory).size());
+        Question q = categoryToQuestions.get(selectedCategory).get(randQ);
+        categoryToQuestions.get(selectedCategory).remove(randQ);
 
         question.setFont(new Font("Impact", Font.PLAIN, 40));
         question.setText(q.getText());
