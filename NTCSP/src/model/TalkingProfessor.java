@@ -1,6 +1,5 @@
-package game;
+package model;
 
-import model.Professor;
 import visual.dynamic.described.AbstractSprite;
 import visual.statik.TransformableContent;
 import visual.statik.sampled.Content;
