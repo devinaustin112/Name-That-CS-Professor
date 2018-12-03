@@ -54,7 +54,6 @@ public class NTCSP extends JApplication implements ActionListener, MouseListener
   ArrayList<Professor> professors;
   Clip clip;
   ContentFactory cf;
-  HashMap<Integer, String> questions;
   HashMap<String, ArrayList<Question>> categoryToQuestions;
   ImageFactory ifa;
   InputStream is;
