@@ -2,16 +2,16 @@
 EW - As an undergrad, I planned to work for the NSA
 EW - I joined JMU in 2015
 EW - My first job was flipping chicken at Zaxby's
-FT - My favorite food is beef cooked in bacon grease and duck fat on my cast iron skillet.
+FT - My favorite food is beef cooked in bacon grease and duck fat on my cast iron skillet
 FT - My favorite class to teach is Discrete Structures II
 FT - My favorite holiday is Easter
 FT - My favorite local spot is The Chop House
-IP - I once ate 11 species of animal in the same meal.
+IP - I once ate 11 species of animal in the same meal
 IP - I have lived in in Uganda
 CP - "Mischief managed"
 FP - I have a dog named Bonnie
 FP - I named my child after a Lord of the Rings character
-LW - I enjoy rock climbing and playing violin.
+LW - I enjoy rock climbing and playing violin
 2 Lam
 EW - My research lies in high-performance computing
 EW - I got my BS in Computer Science from JMU and I started as a professor in 2014
@@ -42,7 +42,7 @@ FT - My favorite class to teach is CS 149
 FT - My favorite holiday is Christmas
 FT - My favorite local spot is Bruster's
 FT - My favorite food is mashed potatoes and gravy
-IP - I have typeset a custom edition of the Book of Mormon.
+IP - I have typeset a custom edition of the Book of Mormon
 CP - "Don't destroy your own integrity for a few points by cheating"
 FP - I have 4 children, 3 girls and one boy
 LW - I spend my free time going places with my family

@@ -12,20 +12,15 @@ import model.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import app.*;
-import event.Metronome;
-import event.MetronomeListener;
 import io.ResourceFinder;
 import resources.Marker;
 import visual.*;
@@ -34,14 +29,13 @@ import visual.statik.sampled.Content;
 import visual.statik.sampled.ContentFactory;
 import visual.statik.sampled.ImageFactory;
 
-public class NTCSP extends JApplication implements MetronomeListener, ActionListener, MouseListener
+public class NTCSP extends JApplication implements ActionListener, MouseListener
 {
   Clip clip;
   JTextField usernameField;
   JTextArea question;
   int score;
   int questionsAsked;
-  Metronome met;
   Visualization vis;
   Stage stage;
   LinkedList<Visualization> profList;
@@ -78,6 +72,45 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
   public static void main(String[] args)
   {
     invokeInEventDispatchThread(new NTCSP(1000, 800));
+  }
+
+  public void init()
+  {
+    JPanel content = (JPanel) getContentPane();
+    rf = ResourceFinder.createInstance(Marker.class);
+    cf = new ContentFactory(rf);
+    ifa = new ImageFactory(rf);
+
+    Content c = cf.createContent("professors.png");
+    MovingImage mi1 = new MovingImage(c, 0, 0);
+    MovingImage mi2 = new MovingImage(c, 1960, 0);
+    stage = new Stage(50);
+    VisualizationView stageView = stage.getView();
+    stageView.setBounds(0, 550, 1000, 200);
+
+    vis = new Visualization();
+    Content home = cf.createContent("NTCSP-1.png");
+    vis.add(home);
+    vis.getView().setBounds(0, 0, 1000, 550);
+
+    stage.addView(vis.getView());
+    stage.add(mi1);
+    stage.add(mi2);
+    content.add(stage.getView());
+    content.add(vis.getView());
+
+    setupUsername();
+
+    // Create start button
+    JButton start = new JButton("Start");
+    start.setFont(new Font("Impact", Font.PLAIN, 30));
+    start.setBounds(width / 2, 750, 500, 50);
+    start.addActionListener(this);
+    content.add(start);
+
+    // Load questions from file
+    loadQuestions();
+    stage.start();
   }
 
   public void loadQuestions()
@@ -160,60 +193,21 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
   }
 
-  public void init()
-  {
-
-    // initialize global attributes
-    met = new Metronome(150);
-    met.addListener(this);
-
-    JPanel content = (JPanel) getContentPane();
-    rf = ResourceFinder.createInstance(Marker.class);
-    cf = new ContentFactory(rf);
-    ifa = new ImageFactory(rf);
-
-    Content c = cf.createContent("professors.png");
-    MovingImage mi1 = new MovingImage(c, 0, 0);
-    MovingImage mi2 = new MovingImage(c, 1960, 0);
-    stage = new Stage(50);
-    VisualizationView stageView = stage.getView();
-    stageView.setBounds(0, 550, 1000, 200);
-
-    vis = new Visualization();
-    Content home = cf.createContent("NTCSP-1.png");
-    vis.add(home);
-    vis.getView().setBounds(0, 0, 1000, 550);
-
-    stage.addView(vis.getView());
-    stage.add(mi1);
-    stage.add(mi2);
-    content.add(stage.getView());
-    content.add(vis.getView());
-
-    setupUsername();
-
-    // Create start button
-    JButton start = new JButton("Start");
-    start.setBounds(width / 2, 750, 500, 50);
-    start.addActionListener(this);
-    content.add(start);
-
-    // Load questions from file
-    loadQuestions();
-    stage.start();
-  }
-
   private void setupUsername()
   {
     JPanel content = (JPanel) getContentPane();
 
     // Create user name label
-    JLabel usernameLabel = new JLabel("Enter User Name:", JLabel.CENTER);
+    JLabel usernameLabel = new JLabel("Enter Name:", JLabel.CENTER);
+    usernameLabel.setFont(new Font("Impact", Font.PLAIN, 20));
+
     usernameLabel.setBounds(0, 750, 150, 50);
     content.add(usernameLabel);
 
     // Create user name entry
     usernameField = new JTextField();
+    usernameField.setHorizontalAlignment(JTextField.CENTER);
+    usernameField.setFont(new Font("Impact", Font.PLAIN, 20));
     usernameField.setBounds(150, 750, 350, 50);
     content.add(usernameField);
   }
@@ -291,12 +285,6 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     content.repaint();
   }
 
-  @Override
-  public void handleTick(int arg0)
-  {
-    JPanel content = (JPanel) getContentPane();
-  }
-
   public void displayScore()
   {
     JPanel content = (JPanel) getContentPane();
@@ -307,13 +295,13 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     vis.getView().setBounds(0, 0, 1000, 750);
 
     JTextField nameArea = new JTextField();
-    nameArea.setFont(new Font("Times New Roman", Font.BOLD, 40));
-    nameArea.setForeground(Color.white);
+    nameArea.setFont(new Font("Impact", Font.PLAIN, 40));
+    nameArea.setForeground(Color.black);
     nameArea.setOpaque(false);
     nameArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
     nameArea.setHorizontalAlignment(JTextField.CENTER);
     nameArea.setEditable(false);
-    nameArea.setText(username + "'s Score.");
+    nameArea.setText(username + "'s Score:");
     nameArea.setBounds(0, 0, 1000, 100);
 
     JTextField scoreArea = new JTextField();
@@ -326,18 +314,21 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     scoreArea.setText(score + "/5");
     scoreArea.setBounds(0, 200, 1000, 400);
 
+    avatar.setLocation(750, 570);
+    content.add(avatar);
     content.add(scoreArea);
     content.add(nameArea);
     content.add(vis.getView());
 
+
     JPanel panel = new JPanel();
-    panel.setBackground(new Color(105, 0, 250));
+    panel.setBackground(Color.white);
     panel.setBounds(0, 750, 1000, 50);
 
     JButton playAgainButton = new JButton("Play Again - Same Category");
     playAgainButton.setFont(new Font("Oswald", Font.BOLD, 15));
     playAgainButton.setBounds(0, 750, 500, 100);
-    playAgainButton.setBackground(Color.YELLOW);
+    playAgainButton.setBackground(new Color(223, 210, 170));
     playAgainButton.addActionListener(this);
     playAgainButton.setUI(new StyledButtonUI());
     panel.add(playAgainButton);
@@ -345,7 +336,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     JButton levelsButton = new JButton("Play Again - Different Category");
     levelsButton.setFont(new Font("Oswald", Font.BOLD, 15));
     levelsButton.setBounds(500, 750, 520, 100);
-    levelsButton.setBackground(Color.YELLOW);
+    levelsButton.setBackground(new Color(223, 210, 170));
     levelsButton.setUI(new StyledButtonUI());
     levelsButton.addActionListener(this);
     panel.add(levelsButton);
@@ -389,149 +380,6 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     }
 
     return clip;
-  }
-
-  @Override
-  public void actionPerformed(ActionEvent arg0)
-  {
-    JPanel content = (JPanel) getContentPane();
-    String ac = arg0.getActionCommand();
-
-    if (ac.equals("Start")) {
-        addAvatars();
-    }
-
-    if (ac.equals("Choose Category") || ac.equals("Play Again - Different Category"))
-    {
-        chooseCategoriesScreen();
-    }
-
-    else if (categoryToQuestions.keySet().contains(ac)) //choosing a category
-    {
-      selectedCategory = ac;
-      for (int i = 0; i < levelButtons.size(); i++)
-      {
-        if (levelButtons.get(i).getLabel().equals(ac))
-        {
-
-          for (JButton other : levelButtons)
-          {
-            other.setBackground(new Color(105, 0, 250));
-          }
-          levelButtons.get(i).setBackground(new Color(69, 0, 132));
-          break;
-        }
-      }
-    }
-
-    else if (ac.equals("PLAY!") || ac.equals("Play Again")
-        || ac.equals("Play Again - Same Category"))
-    {
-        startGame();
-    } else if (ac.equals("Submit Choice"))
-    {
-        resultScreen();
-    }
-
-    else if (ac.equals("Next Question"))
-    {
-//      clip.stop();
-      // Display question
-      if (questionsAsked % 5 == 0)
-      {
-        content.removeAll();
-        content.revalidate();
-        content.repaint();
-        displayScore();
-        loadQuestions();
-      } else
-      {
-        content.removeAll();
-        JButton submit = new JButton("Submit Choice");
-        submit.setBounds(0, 750, 1000, 50);
-        submit.addActionListener(this);
-        content.add(submit);
-
-        Content qContent = cf.createContent("question.png");
-
-        vis = new Visualization();
-        vis.add(qContent);
-        vis.getView().setBounds(0, 0, 1000, 300);
-
-        question = new JTextArea();
-        question.setBackground(new Color(105, 0, 250));
-        question.setForeground(new Color(0, 0, 0));
-        question.setEditable(false);
-
-        int randQ = (int) (rand.nextDouble() * questionSet.size());
-        Question q = questionSet.get(randQ);
-        questionSet.remove(randQ);
-
-        question.setFont(new Font("Times New Roman", Font.BOLD, 35));
-        question.setText(q.getText());
-        correctProfessor = q.getAnswer();
-        question.setLineWrap(true);
-        question.setBounds(350, 100, 600, 200);
-        question.setOpaque(false);
-
-        addProfessors(q);
-
-        content.setBackground(Color.white);
-        content.add(question);
-        content.add(vis.getView());
-        content.revalidate();
-        content.repaint();
-        met.stop();
-      }
-    }
-  }
-
-  @Override
-  public void mouseClicked(MouseEvent arg0)
-  {
-    if(profList != null) {
-      for (int i = 0; i < profList.size(); i++) {
-        profList.get(i).setBackground(Color.white);
-      }
-    }
-
-    for (int i = 0; i < avatars.size(); i++) {
-      avatars.get(i).setBackground(new Color(104, 23, 250));
-    }
-
-
-    if(avatars.contains(arg0.getSource())) {
-      avatar = (VisualizationView) arg0.getSource();
-      avatar.setBackground(new Color(223, 210, 170));
-    } else {
-      chosen = (VisualizationView) arg0.getSource();
-      chosen.setBackground(new Color(104, 23, 250));
-    }
-
-  }
-
-  @Override
-  public void mouseEntered(MouseEvent arg0)
-  {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void mouseExited(MouseEvent arg0)
-  {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void mousePressed(MouseEvent arg0)
-  {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void mouseReleased(MouseEvent arg0)
-  {
-    // TODO Auto-generated method stub
   }
 
   public void addAvatars()
@@ -578,7 +426,8 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
     }
     avatar = vis.getView();
 
-    JButton start = new JButton("Choose Category");
+    JButton start = new JButton("Submit Avatar Choice");
+    start.setFont(new Font("Impact", Font.PLAIN, 20));
     start.setBounds(0, 750, 1000, 50);
     start.addActionListener(this);
     content.add(start);
@@ -631,7 +480,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
         answer.addMouseListener(this);
         prof.setLocation(25, 0);
         answer.add(prof);
-        answer.getView().setBounds(x, 450, 250, 200);
+        answer.getView().setBounds(x, 420, 250, 200);
         correct = answer.getView();
         content.add(answer.getView());
         profList.add(answer);
@@ -645,7 +494,7 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
         answer.addMouseListener(this);
         prof.setLocation(25, 0);
         answer.add(prof);
-        answer.getView().setBounds(x, 450, 250, 200);
+        answer.getView().setBounds(x, 420, 250, 200);
         content.add(answer.getView());
         profList.add(answer);
         x = x + 250;
@@ -656,93 +505,254 @@ public class NTCSP extends JApplication implements MetronomeListener, ActionList
 
   public void startGame()
   {
-      JPanel content = (JPanel) getContentPane();
-
+    JPanel content = (JPanel) getContentPane();
       // Store username
-      username = usernameField.getText();
+    username = usernameField.getText();
 
-      //Reset score
-      score = 0;
+    //Reset score
+    score = 0;
 
-      content.removeAll();
-      JButton submit = new JButton("Submit Choice");
-      submit.setBounds(0, 750, 1000, 50);
-      submit.addActionListener(this);
-      content.add(submit);
+    content.removeAll();
+    JButton submit = new JButton("Submit Choice");
+    submit.setFont(new Font("Impact", Font.PLAIN, 30));
+    submit.setBounds(0, 750, 1000, 50);
+    submit.addActionListener(this);
+    content.add(submit);
 
-      Content qContent = cf.createContent("question.png");
+    Content qContent = cf.createContent("question.png");
 
-      vis = new Visualization();
-      vis.add(qContent);
-      vis.getView().setBounds(0, 0, 1000, 300);
+    Visualization vis = new Visualization();
+    vis.add(qContent);
+    vis.getView().setBounds(0, 0, 1000, 300);
 
-      question = new JTextArea();
-      question.setBackground(new Color(105, 0, 250));
-      question.setForeground(new Color(0, 0, 0));
-      question.setEditable(false);
+    question = new JTextArea();
+    question.setBackground(new Color(105, 0, 250));
+    question.setForeground(new Color(0, 0, 0));
+    question.setEditable(false);
 
-      questionSet = categoryToQuestions.get(selectedCategory);
+    questionSet = categoryToQuestions.get(selectedCategory);
 
-      int randQ = (int) (rand.nextDouble() * questionSet.size());
-      Question q = questionSet.get(randQ);
-      questionSet.remove(randQ);
+    int randQ = (int) (rand.nextDouble() * questionSet.size());
+    Question q = questionSet.get(randQ);
+    questionSet.remove(randQ);
 
-      correctProfessor = q.getAnswer();
-      question.setFont(new Font("Times New Roman", Font.BOLD, 40));
-      question.setText(q.getText());
-      question.setLineWrap(true);
-      question.setBounds(350, 100, 600, 200);
-      question.setOpaque(false);
+    correctProfessor = q.getAnswer();
+    question.setFont(new Font("Impact", Font.PLAIN, 40));
+    question.setText(q.getText());
+    question.setLineWrap(true);
+    question.setWrapStyleWord(true);
+    question.setBounds(350, 60, 600, 200);
+    question.setOpaque(false);
 
-      addProfessors(q);
+    addProfessors(q);
 
-      content.setBackground(Color.white);
-      content.add(question);
-      content.add(vis.getView());
-      content.revalidate();
-      content.repaint();
-      met.stop();
+    content.setBackground(Color.white);
+    content.add(question);
+    content.add(vis.getView());
+    content.revalidate();
+    content.repaint();
   }
 
   public void resultScreen()
   {
-      JPanel content = (JPanel) getContentPane();
+    JPanel content = (JPanel) getContentPane();
 
-      questionsAsked++;
-      content.removeAll();
-      JButton next = new JButton("Next Question");
-      next.setBounds(0, 750, 1000, 50);
-      next.addActionListener(this);
-      Content c;
+    questionsAsked++;
+    content.removeAll();
+    JButton next = new JButton("Next Question");
+    next.setFont(new Font("Impact", Font.PLAIN, 30));
+    next.setBounds(0, 750, 1000, 50);
+    next.addActionListener(this);
+    Content c;
+    Content qContent = cf.createContent("question.png");
 
-      if (chosen == correct)
-      {
-//        clip = initClip(correctProfessor.getAudioNameCorrect());
-        score++;
-      }
-      else
-      {
+    Visualization vis = new Visualization();
+    vis.add(qContent);
+    vis.getView().setBounds(0, 0, 1000, 300);
+
+    Visualization vis1 = new Visualization();
+    vis1.getView().setBounds(150, 380, 615, 180);
+
+    if (chosen == correct)
+    {
+      c = cf.createContent("Correct.png");
+      c.setLocation(0, 0);
+      vis1.add(c);
+//       clip = initClip(correctProfessor.getAudioNameCorrect());
+      score++;
+    }
+    else
+    {
+      c = cf.createContent("Incorrect.png");
+      c.setLocation(0, 0);
+      vis1.add(c);
 //        clip = initClip(correctProfessor.getAudioNameIncorrect());
-      }
+    }
 
-      TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
+    TalkingProfessor tp = new TalkingProfessor(cf, correctProfessor);
 
-      stage = new Stage(65);
-      stage.getView().setBounds(0, 550, 200, 200);
-      stage.add(cf.createContent(correctProfessor.getHeadImageName()));
-      stage.add(tp);
+    stage = new Stage(65);
+    stage.getView().setBounds(0, 550, 200, 200);
+    stage.add(cf.createContent(correctProfessor.getHeadImageName()));
+    stage.add(tp);
 
-      avatar.setLocation(700, 450);
-      content.setBackground(Color.white);
-      content.add(stage.getView());
-      content.add(vis.getView());
-      content.add(next);
-      content.setBackground(new Color(104, 23, 250));
-      content.add(avatar);
-      content.revalidate();
-      content.repaint();
-      stage.start();
+    avatar.setLocation(700, 450);
+    content.setBackground(Color.white);
+    content.add(vis1.getView());
+    content.add(stage.getView());
+    content.add(vis.getView());
+    content.add(next);
+    content.setBackground(Color.white);
+    content.add(avatar);
+    content.revalidate();
+    content.repaint();
+    stage.start();
 
 //      clip.start();
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent arg0)
+  {
+    JPanel content = (JPanel) getContentPane();
+    String ac = arg0.getActionCommand();
+
+    if (ac.equals("Start")) {
+      addAvatars();
+    }
+
+    if (ac.equals("Submit Avatar Choice") || ac.equals("Play Again - Different Category"))
+    {
+      chooseCategoriesScreen();
+    }
+
+    else if (categoryToQuestions.keySet().contains(ac)) //choosing a category
+    {
+      selectedCategory = ac;
+      for (int i = 0; i < levelButtons.size(); i++)
+      {
+        if (levelButtons.get(i).getLabel().equals(ac))
+        {
+
+          for (JButton other : levelButtons)
+          {
+            other.setBackground(new Color(105, 0, 250));
+          }
+          levelButtons.get(i).setBackground(new Color(69, 0, 132));
+          break;
+        }
+      }
+    }
+
+    else if (ac.equals("PLAY!") || ac.equals("Play Again")
+            || ac.equals("Play Again - Same Category"))
+    {
+      startGame();
+    } else if (ac.equals("Submit Choice"))
+    {
+      resultScreen();
+    }
+
+    else if (ac.equals("Next Question"))
+    {
+//      clip.stop();
+      // Display question
+      if (questionsAsked % 5 == 0)
+      {
+        content.removeAll();
+        content.revalidate();
+        content.repaint();
+        displayScore();
+        loadQuestions();
+      } else
+      {
+        content.removeAll();
+        JButton submit = new JButton("Submit Choice");
+        submit.setFont(new Font("Impact", Font.PLAIN, 30));
+        submit.setBounds(0, 750, 1000, 50);
+        submit.addActionListener(this);
+        content.add(submit);
+
+        Content qContent = cf.createContent("question.png");
+
+        vis = new Visualization();
+        vis.add(qContent);
+        vis.getView().setBounds(0, 0, 1000, 300);
+
+        question = new JTextArea();
+        question.setLineWrap(true);
+        question.setWrapStyleWord(true);
+        question.setBackground(new Color(105, 0, 250));
+        question.setForeground(new Color(0, 0, 0));
+        question.setEditable(false);
+
+        int randQ = (int) (rand.nextDouble() * questionSet.size());
+        Question q = questionSet.get(randQ);
+        questionSet.remove(randQ);
+
+        question.setFont(new Font("Impact", Font.PLAIN, 40));
+        question.setText(q.getText());
+        correctProfessor = q.getAnswer();
+        question.setLineWrap(true);
+        question.setBounds(350, 60, 600, 200);
+        question.setOpaque(false);
+
+        addProfessors(q);
+
+        content.setBackground(Color.white);
+        content.add(question);
+        content.add(vis.getView());
+        content.revalidate();
+        content.repaint();
+      }
+    }
+  }
+
+  @Override
+  public void mouseClicked(MouseEvent arg0)
+  {
+    if(profList != null) {
+      for (int i = 0; i < profList.size(); i++) {
+        profList.get(i).setBackground(Color.white);
+      }
+    }
+
+    for (int i = 0; i < avatars.size(); i++) {
+      avatars.get(i).setBackground(new Color(104, 23, 250));
+    }
+
+
+    if(avatars.contains(arg0.getSource())) {
+      avatar = (VisualizationView) arg0.getSource();
+      avatar.setBackground(new Color(223, 210, 170));
+    } else {
+      chosen = (VisualizationView) arg0.getSource();
+      chosen.setBackground(new Color(104, 23, 250));
+    }
+
+  }
+
+  @Override
+  public void mouseEntered(MouseEvent arg0)
+  {
+    // TODO Auto-generated method stub
+  }
+
+  @Override
+  public void mouseExited(MouseEvent arg0)
+  {
+    // TODO Auto-generated method stub
+  }
+
+  @Override
+  public void mousePressed(MouseEvent arg0)
+  {
+    // TODO Auto-generated method stub
+  }
+
+  @Override
+  public void mouseReleased(MouseEvent arg0)
+  {
+    // TODO Auto-generated method stub
   }
 }
